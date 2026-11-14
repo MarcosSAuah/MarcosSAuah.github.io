@@ -21,7 +21,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Sans:wght@400;500;700&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="static/css/style.css?v=2.3">
+  <link rel="stylesheet" href="static/css/style.css?v=2.4">
 </head>
 
 <body>
@@ -29,13 +29,13 @@
   <div id="bar"></div>
   <div id="ring" aria-hidden="true"></div>
   <div id="cur" aria-hidden="true"></div>
-  <a class="skip" href="#consola">Saltar al contenido</a>
-  <nav><a class="brand" href="#consola" data-go="-1" aria-label="Volver al inicio">MS</a><button id="mn"
-      aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">☰</button>
-    <div id="menu"><a href="#consola" data-go="-1">Inicio</a><a href="#consola" data-go="0">Proyectos</a><a
-        href="#skills">Skills</a><a href="#trayectoria">Trayectoria</a><a href="#sobre-mi">Sobre mí</a><a
-        href="#contacto">Contacto</a><button class="snd" id="snd" type="button" aria-pressed="true">Sonido:
-        sí</button><a class="cv" href="./cv.pdf" target="_blank" rel="noopener" style="background:var(--yellow)">CV</a>
+  <a class="skip" href="#consola" data-i18n="nav.skip">Saltar al contenido</a>
+  <nav><a class="brand" href="#consola" data-go="-1" data-i18n-aria="nav.brandAria" aria-label="Volver al inicio">MS</a><button id="mn"
+      data-i18n-aria="nav.menuAria" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">☰</button>
+    <div id="menu"><a href="#consola" data-go="-1" data-i18n="nav.home">Inicio</a><a href="#consola" data-go="0" data-i18n="nav.projects">Proyectos</a><a
+        href="#skills" data-i18n="nav.skills">Skills</a><a href="#trayectoria" data-i18n="nav.journey">Trayectoria</a><a href="#sobre-mi" data-i18n="nav.about">Sobre mí</a><a
+        href="#contacto" data-i18n="nav.contact">Contacto</a><button class="snd" id="snd" type="button" aria-pressed="true">Sonido:
+        sí</button><button class="lang-btn" id="langBtn" type="button" aria-label="Cambiar idioma a inglés"><span class="lang-opt act" id="langEs">ES</span><span class="lang-sep">/</span><span class="lang-opt" id="langEn">EN</span></button><a class="cv" href="./cv.pdf" target="_blank" rel="noopener" style="background:var(--yellow)">CV</a>
     </div>
   </nav>
 
@@ -45,17 +45,17 @@
         <div class="txt">
           <div class="pane on" id="hero">
             <h1 aria-label="Marcos Santos">Marcos Santos</h1>
-            <p class="lead">Estudiante de último curso de <strong>Ingeniería Telemática</strong> (UAH) con experiencia
+            <p class="lead" data-i18n="hero.lead">Estudiante de último curso de <strong>Ingeniería Telemática</strong> (UAH) con experiencia
               en
               proyectos reales de I+D junto a Correos y ALTEN. <strong>Busco prácticas en Madrid desde enero/febrero de
                 2027</strong> en redes, ciberseguridad, backend, infra/DevOps o IA.</p>
-            <div class="row"><span class="tag">Prácticas ene/feb 2027</span><span class="tag">Madrid · mín. 450 y max
-                900 h</span><span class="tag">Hasta 35 h/sem</span><span class="tag">Inglés B2</span></div>
-            <div class="row"><a class="btn mag" href="./cv.pdf" target="_blank" rel="noopener">Descargar CV</a><a
-                class="btn alt mag" href="https://github.com/MarcosSAuah" target="_blank" rel="noopener">GitHub</a>
+            <div class="row"><span class="tag" data-i18n="hero.tag1">Prácticas ene/feb 2027</span><span class="tag" data-i18n="hero.tag2">Madrid · mín. 450 y max
+                900 h</span><span class="tag" data-i18n="hero.tag3">Hasta 35 h/sem</span><span class="tag" data-i18n="hero.tag4">Inglés B2</span></div>
+            <div class="row"><a class="btn mag" href="./cv.pdf" target="_blank" rel="noopener" data-i18n="hero.btnCv">Descargar CV</a><a
+                class="btn alt mag" href="https://github.com/MarcosSAuah" target="_blank" rel="noopener" data-i18n="hero.btnGh">GitHub</a>
             </div>
-            <p class="hint"><i></i>Haz scroll para insertar un cartucho (o usa ← →)</p>
-            <ul class="sr">
+            <p class="hint"><i></i><span data-i18n="hero.hint">Haz scroll para insertar un cartucho (o usa ← →)</span></p>
+            <ul class="sr" id="srList">
               <li>Correos Logistics API: FastAPI, Redis, Docker Compose, PostgreSQL, JWT, YOLO.</li>
               <li>ALTEN Mixed Reality LMS: Flask, SQLAlchemy, MariaDB, LDAP, Redis, Docker Compose, pytest.</li>
               <li>Marchel VoIP PBX: Asterisk 22, PJSIP, Flask, MariaDB, UAH.</li>
@@ -75,8 +75,8 @@
         <div class="gba">
           <div id="tilt">
             <div class="stage empty" id="stage" role="group"
-              aria-label="Consola portátil con los proyectos como cartuchos">
-              <div id="cart" class="k" role="button" tabindex="0" aria-label="Expulsar cartucho">
+              data-i18n-aria="console.stageAria" aria-label="Consola portátil con los proyectos como cartuchos">
+              <div id="cart" class="k" role="button" tabindex="0" data-i18n-aria="console.cartAria" aria-label="Expulsar cartucho">
                 <div class="grip"></div>
                 <div class="lab" id="clab"><img class="cwm" id="cwm" alt="" aria-hidden="true" hidden>
                   <div class="ltx"><small id="cc"></small><b id="ct"></b><span class="lsub" id="csub" hidden></span>
@@ -84,8 +84,8 @@
                       decoding="async"></span>
                 </div><span class="ej">EXPULSAR</span>
               </div>
-              <button class="sh k" id="sl" type="button" aria-label="Botón L: cartucho anterior">L</button><button
-                class="sh k" id="sr" type="button" aria-label="Botón R: cartucho siguiente">R</button>
+              <button class="sh k" id="sl" type="button" data-i18n-aria="console.btnL" aria-label="Botón L: cartucho anterior">L</button><button
+                class="sh k" id="sr" type="button" data-i18n-aria="console.btnR" aria-label="Botón R: cartucho siguiente">R</button>
               <div class="body" id="body">
                 <i class="slot"><b></b></i>
                 <div class="bz"><span class="led" id="led"></span><span class="ledl">POWER</span>
@@ -128,22 +128,22 @@
                     <circle cx="15" cy="15" r="4" fill="rgba(0,0,0,.35)" />
                   </svg>
                   <div>
-                    <span></span><button class="k" id="du" aria-label="Cartucho anterior"></button>
-                    <span></span><button class="k" id="dl" tabindex="-1" aria-label="Cartucho anterior"></button>
-                    <span></span><button class="k" id="dr" aria-label="Cartucho siguiente"></button>
-                    <span></span><button class="k" id="dd" tabindex="-1" aria-label="Cartucho siguiente"></button>
+                    <span></span><button class="k" id="du" data-i18n-aria="console.btnPrev" aria-label="Cartucho anterior"></button>
+                    <span></span><button class="k" id="dl" tabindex="-1" data-i18n-aria="console.btnPrev" aria-label="Cartucho anterior"></button>
+                    <span></span><button class="k" id="dr" data-i18n-aria="console.btnNext" aria-label="Cartucho siguiente"></button>
+                    <span></span><button class="k" id="dd" tabindex="-1" data-i18n-aria="console.btnNext" aria-label="Cartucho siguiente"></button>
                     <span></span>
                   </div>
                 </div>
                 <button class="fb k" id="ba" style="left:88cqw;top:13cqw"
-                  aria-label="Botón A: abrir código o caso de estudio">A</button>
+                  data-i18n-aria="console.btnA" aria-label="Botón A: abrir código o caso de estudio">A</button>
                 <button class="fb k" id="bb" style="left:81.2cqw;top:19.8cqw"
-                  aria-label="Botón B: expulsar cartucho">B</button>
+                  data-i18n-aria="console.btnB" aria-label="Botón B: expulsar cartucho">B</button>
                 <div class="pw" style="left:3.2cqw;top:36cqw"><button class="pl k" id="se" type="button"
-                    aria-label="Select: volver al inicio"></button><span class="pt" aria-hidden="true">SELECT</span>
+                    data-i18n-aria="console.btnSelect" aria-label="Select: volver al inicio"></button><span class="pt" aria-hidden="true">SELECT</span>
                 </div>
                 <div class="pw" style="left:11cqw;top:36cqw"><button class="pl k" id="sa" type="button"
-                    aria-label="Start: siguiente cartucho"></button><span class="pt" aria-hidden="true">START</span>
+                    data-i18n-aria="console.btnStart" aria-label="Start: siguiente cartucho"></button><span class="pt" aria-hidden="true">START</span>
                 </div>
                 <div class="gr" aria-hidden="true"></div>
                 <div class="glare"></div>
@@ -158,7 +158,7 @@
       <div class="dlg-cnt" id="dlgCnt">
         <h3 id="dt"></h3>
         <div id="db"></div>
-        <div class="row"><button class="btn alt" type="button" id="dx">Cerrar</button></div>
+        <div class="row"><button class="btn alt" type="button" id="dx" data-i18n="dlg.close">Cerrar</button></div>
       </div>
     </dialog>
 
@@ -166,19 +166,19 @@
 
     <section class="s" id="skills">
       <div class="blob" data-s=".12" style="width:300px;height:300px;background:var(--lav);right:-80px;top:80px"></div>
-      <span class="kick rv">02 · SKILLS</span>
-      <h2 class="rv">Lo que sé hacer</h2>
+      <span class="kick rv" data-i18n="skills.kick">02 · SKILLS</span>
+      <h2 class="rv" data-i18n="skills.title">Lo que sé hacer</h2>
       <div class="grid" id="sk"></div>
     </section>
 
     <section class="s" id="trayectoria">
       <div class="blob" data-s="-.1" style="width:260px;height:260px;background:var(--mint);left:-90px;top:200px"></div>
-      <span class="kick rv">03 · RUTA</span>
-      <h2 class="rv">Trayectoria</h2>
+      <span class="kick rv" data-i18n="journey.kick">03 · RUTA</span>
+      <h2 class="rv" data-i18n="journey.title">Trayectoria</h2>
       <div class="tl" id="tl">
         <div class="it rv" style="--c:var(--coral)">
-          <h3>Becario I+D · Correos × UAH</h3><small>Jun. 2026 a la actualidad</small>
-          <p>API core en <b>FastAPI</b> para automatizar el análisis de ocupación de casilleros postales: autenticación
+          <h3 data-i18n="journey.cRole">Becario I+D · Correos × UAH</h3><small data-i18n="journey.cDate">Jun. 2026 a la actualidad</small>
+          <p data-i18n="journey.cDesc">API core en <b>FastAPI</b> para automatizar el análisis de ocupación de casilleros postales: autenticación
             <b>JWT</b> para las PDAs, validación y guardado de fotos y colas <b>Redis</b> hacia el servicio de visión
             artificial (<b>YOLO</b>). Apoyo en el despliegue con <b>Docker Compose</b>, <b>PostgreSQL</b> y
             <b>Nginx</b>, y en el etiquetado de imágenes para entrenar la IA.
@@ -187,8 +187,8 @@
               class="tag">PostgreSQL</span><span class="tag">Docker Compose</span><span class="tag">YOLO</span></div>
         </div>
         <div class="it rv" style="--c:var(--teal)">
-          <h3>Becario I+D · ALTEN × UAH</h3><small>Oct. 2024 a Jun. 2026</small>
-          <p>Portal web docente en <b>Flask + SQLAlchemy</b> para el aprendizaje de español en <b>Realidad Mixta</b>
+          <h3 data-i18n="journey.aRole">Becario I+D · ALTEN × UAH</h3><small data-i18n="journey.aDate">Oct. 2024 a Jun. 2026</small>
+          <p data-i18n="journey.aDesc">Portal web docente en <b>Flask + SQLAlchemy</b> para el aprendizaje de español en <b>Realidad Mixta</b>
             (niños de 7 a 10 años): acceso por roles (profesores, gestores de centro, administradores y alumnos),
             autenticación corporativa por <b>LDAP</b> con fallback local, limitación de intentos con <b>Redis</b>,
             tareas programadas de mantenimiento y 59 tests con <b>pytest</b>. Diseño conjunto de la base de datos en
@@ -199,19 +199,19 @@
               class="tag">Docker Compose</span><span class="tag">pytest</span></div>
         </div>
         <div class="it rv" style="--c:var(--yellow)">
-          <h3>Dependiente · Inditex / Parfois</h3><small>2024</small>
-          <p>Atención al cliente e incidencias en caja: comunicación y trabajo en equipo bajo presión.</p>
+          <h3 data-i18n="journey.iRole">Dependiente · Inditex / Parfois</h3><small data-i18n="journey.iDate">2024</small>
+          <p data-i18n="journey.iDesc">Atención al cliente e incidencias en caja: comunicación y trabajo en equipo bajo presión.</p>
         </div>
       </div>
     </section>
 
     <section class="s" id="sobre-mi">
       <div class="blob" data-s=".1" style="width:240px;height:240px;background:var(--yellow);right:-60px;top:60px">
-      </div><span class="kick rv">04 · YO</span>
-      <h2 class="rv">Más allá del código</h2>
+      </div><span class="kick rv" data-i18n="about.kick">04 · YO</span>
+      <h2 class="rv" data-i18n="about.title">Más allá del código</h2>
       <div class="ab">
         <div class="rv">
-          <div class="pol" id="polFrame" role="region" aria-label="Foto polaroid de Marcos">
+          <div class="pol" id="polFrame" role="region" data-i18n-aria="about.polAria" aria-label="Foto polaroid de Marcos">
             <div class="pol-media" id="polMedia">
               <div class="pol-slides" id="polSlides">
                 <img class="pol-slide active" src="static/images/foto1.avif" alt="Marcos Santos Aragón" loading="eager"
@@ -230,21 +230,21 @@
           </div>
         </div>
         <div class="rv">
-          <p class="lead" style="max-width:56ch">Mi vocación por la tecnología nació de una curiosidad simple, entender
+          <p class="lead" style="max-width:56ch" data-i18n="about.lead">Mi vocación por la tecnología nació de una curiosidad simple, entender
             cómo funcionan las cosas por dentro. Me apasiona el camino que recorre la información,
             desde la arquitectura de red y la seguridad en cada salto hasta los servicios de backend que sostienen el
             servicio. Actualmente curso el último año de Ingeniería Telemática en la Universidad de Alcalá, donde solo
             me falta una asignatura y el Trabajo de Fin de Grado vinculado a mi proyecto en ALTEN. Cuento con un nivel
             en inglés de B2 y busco aportar valor resolviendo problemas reales en entornos de producción.</p>
           <div class="hob">
-            <div><b>Curiosidad técnica</b>Esta consola interactiva es un guiño a las tardes jugando a la Nintendo DS con
+            <div data-i18n="about.h1"><b>Curiosidad técnica</b>Esta consola interactiva es un guiño a las tardes jugando a la Nintendo DS con
               mi hermano y a ese interés constante por cacharrear que me impulsó hacia la ingeniería.</div>
-            <div><b>Comunidad y divulgación</b>Cotutor voluntario en Technovation Girls UAH y colaborador en el congreso
+            <div data-i18n="about.h2"><b>Comunidad y divulgación</b>Cotutor voluntario en Technovation Girls UAH y colaborador en el congreso
               CNSM. Disfruto colaborando en iniciativas que impulsan el talento técnico y el trabajo en equipo.</div>
-            <div><b>Mente activa</b>Fuera del teclado me encontrarás practicando deporte, jugando al fútbol, dibujando,
+            <div data-i18n="about.h3"><b>Mente activa</b>Fuera del teclado me encontrarás practicando deporte, jugando al fútbol, dibujando,
               jugando juegos de mesa, disfrutando de series y anime o pasando tiempo de calidad con mis amigos y/o
               familia.</div>
-            <div><b>Gestión y empatía</b>Mi experiencia en Inditex y Parfois me enseñó a comunicarme con claridad,
+            <div data-i18n="about.h4"><b>Gestión y empatía</b>Mi experiencia en Inditex y Parfois me enseñó a comunicarme con claridad,
               mantener la templanza en momentos de alta exigencia y cuidar siempre el trato a los demás.</div>
           </div>
         </div>
@@ -252,51 +252,51 @@
     </section>
 
     <footer id="contacto">
-      <span class="kick rv">05 · CONTACTO</span>
-      <h2 class="rv">Hablamos</h2>
+      <span class="kick rv" data-i18n="contact.kick">05 · CONTACTO</span>
+      <h2 class="rv" data-i18n="contact.title">Hablamos</h2>
       <div class="ct">
         <div class="cinfo">
-          <p class="lead rv">Listo para incorporarme en Madrid desde enero o febrero de 2027 mediante convenio de
+          <p class="lead rv" data-i18n="contact.lead">Listo para incorporarme en Madrid desde enero o febrero de 2027 mediante convenio de
             prácticas de mínimo 450 horas y máximo 900 horas, hasta 35 horas semanales, en formato híbrido o presencial
             y compatible con mi
             última asignatura. Si buscas un perfil motivado para redes, ciberseguridad, backend, infraestructura/DevOps
             o IA, contáctame directamente:</p>
           <div class="cchans rv">
             <div class="cbox">
-              <div><small>EMAIL</small><a class="clink" id="emtxt" href="#contacto">Mostrar email</a></div>
-              <div class="cacts"><a class="cbtn p" id="emgo" href="#contacto">Escribir</a><button class="cbtn" id="em"
-                  type="button">Copiar</button></div>
+              <div><small data-i18n="contact.emailLbl">EMAIL</small><a class="clink" id="emtxt" href="#contacto" data-i18n="contact.showEmail">Mostrar email</a></div>
+              <div class="cacts"><a class="cbtn p" id="emgo" href="#contacto" data-i18n="contact.compose">Escribir</a><button class="cbtn" id="em"
+                  type="button" data-i18n="contact.copy">Copiar</button></div>
             </div>
             <div class="cbox">
-              <div><small>TELÉFONO</small><a class="clink" id="phtxt" href="#contacto">+34 ··· ·· ·· ··</a></div>
-              <div class="cacts"><button class="cbtn p" id="ph" type="button">Ver teléfono</button><a class="cbtn p"
-                  id="phgo" href="#contacto" hidden>Llamar</a><button class="cbtn" id="phcp" type="button"
-                  hidden>Copiar</button></div>
+              <div><small data-i18n="contact.phoneLbl">TELÉFONO</small><a class="clink" id="phtxt" href="#contacto">+34 ··· ·· ·· ··</a></div>
+              <div class="cacts"><button class="cbtn p" id="ph" type="button" data-i18n="contact.showPhone">Ver teléfono</button><a class="cbtn p"
+                  id="phgo" href="#contacto" hidden data-i18n="contact.call">Llamar</a><button class="cbtn" id="phcp" type="button"
+                  hidden data-i18n="contact.copy">Copiar</button></div>
             </div>
           </div>
         </div>
         <div class="cstatus rv" id="cstatus">
           <div class="cstatus-badge">
             <span class="cstatus-dot"></span>
-            <span>ESTADO · DISPONIBLE</span>
+            <span data-i18n="status.badge">ESTADO · DISPONIBLE</span>
           </div>
-          <h3>Incorporación 2027</h3>
+          <h3 data-i18n="status.title">Incorporación 2027</h3>
           <div class="cstatus-specs">
             <div class="cspec">
-              <small>UBICACIÓN & FORMATO</small>
-              <strong>Madrid · Híbrido o Presencial</strong>
+              <small data-i18n="status.locLbl">UBICACIÓN & FORMATO</small>
+              <strong data-i18n="status.locVal">Madrid · Híbrido o Presencial</strong>
             </div>
             <div class="cspec">
-              <small>JORNADA</small>
-              <strong>Hasta 35 h / semana</strong>
+              <small data-i18n="status.hoursLbl">JORNADA</small>
+              <strong data-i18n="status.hoursVal">Hasta 35 h / semana</strong>
             </div>
             <div class="cspec">
-              <small>DURACIÓN</small>
-              <strong>Mínimo 450 h y máximo 900 h (convenio UAH)</strong>
+              <small data-i18n="status.durLbl">DURACIÓN</small>
+              <strong data-i18n="status.durVal">Mínimo 450 h y máximo 900 h (convenio UAH)</strong>
             </div>
             <div class="cspec">
-              <small>ÁREAS DE INTERÉS</small>
-              <strong>Redes, Ciber, Backend, Infra/DevOps & IA</strong>
+              <small data-i18n="status.areasLbl">ÁREAS DE INTERÉS</small>
+              <strong data-i18n="status.areasVal">Redes, Ciber, Backend, Infra/DevOps & IA</strong>
             </div>
           </div>
         </div>
@@ -305,13 +305,13 @@
         <a class="btn alt mag" href="https://www.linkedin.com/in/marcos-santos-aragon" target="_blank"
           rel="noopener">LinkedIn</a>
         <a class="btn alt mag" href="https://github.com/MarcosSAuah" target="_blank" rel="noopener">GitHub</a>
-        <a class="btn mag" href="./cv.pdf" target="_blank" rel="noopener">Descargar CV</a>
+        <a class="btn mag" href="./cv.pdf" target="_blank" rel="noopener" data-i18n="footer.btnCv">Descargar CV</a>
       </div>
-      <p class="fcopy">Marcos Santos Aragón · Madrid, España</p>
+      <p class="fcopy" data-i18n="footer.copy">Marcos Santos Aragón · Madrid, España</p>
     </footer>
   </main>
 
-  <script src="static/js/main.js?v=2.3" defer></script>
+  <script src="static/js/main.js?v=2.4" defer></script>
 </body>
 
 </html>

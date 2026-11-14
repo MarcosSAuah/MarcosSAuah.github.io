@@ -1,87 +1,474 @@
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
 const G = 'https://github.com/MarcosSAuah';
+
+const I18N = {
+  es: {
+    meta: {
+      title: 'Marcos Santos · Ingeniería Telemática',
+      desc: 'Portfolio de Marcos Santos, estudiante de último año de Ingeniería Telemática (UAH) en busca de prácticas en Madrid (ene/feb 2027). Redes, ciberseguridad, backend, infra/DevOps e IA.',
+      ogTitle: 'Marcos Santos · Telemática & Redes',
+      ogDesc: 'FastAPI, Redis, Docker, Asterisk y redes. Portfolio interactivo.'
+    },
+    nav: {
+      skip: 'Saltar al contenido',
+      brandAria: 'Volver al inicio',
+      menuAria: 'Abrir menú',
+      home: 'Inicio',
+      projects: 'Proyectos',
+      skills: 'Skills',
+      journey: 'Trayectoria',
+      about: 'Sobre mí',
+      contact: 'Contacto',
+      soundOn: 'Sonido: sí',
+      soundOff: 'Sonido: no',
+      langAria: 'Cambiar idioma a inglés'
+    },
+    hero: {
+      lead: 'Estudiante de último curso de <strong>Ingeniería Telemática</strong> (UAH) con experiencia en proyectos reales de I+D junto a Correos y ALTEN. <strong>Busco prácticas en Madrid desde enero/febrero de 2027</strong> en redes, ciberseguridad, backend, infra/DevOps o IA.',
+      tag1: 'Prácticas ene/feb 2027',
+      tag2: 'Madrid · mín. 450 y max 900 h',
+      tag3: 'Hasta 35 h/sem',
+      tag4: 'Inglés B2',
+      btnCv: 'Descargar CV',
+      btnGh: 'GitHub',
+      hint: 'Haz scroll para insertar un cartucho (o usa ← →)',
+      srItems: [
+        'Correos Logistics API: FastAPI, Redis, Docker Compose, PostgreSQL, JWT, YOLO.',
+        'ALTEN Mixed Reality LMS: Flask, SQLAlchemy, MariaDB, LDAP, Redis, Docker Compose, pytest.',
+        'Marchel VoIP PBX: Asterisk 22, PJSIP, Flask, MariaDB, UAH.',
+        'NiKA Distributed Chat: Python, Sockets TCP/UDP, select(), P2P, Flask, WebSockets, AWS Lambda.'
+      ]
+    },
+    console: {
+      stageAria: 'Consola portátil con los proyectos como cartuchos',
+      cartAria: 'Expulsar cartucho',
+      eject: 'EXPULSAR',
+      btnL: 'Botón L: cartucho anterior',
+      btnR: 'Botón R: cartucho siguiente',
+      btnPrev: 'Cartucho anterior',
+      btnNext: 'Cartucho siguiente',
+      btnA: 'Botón A: abrir código o caso de estudio',
+      btnB: 'Botón B: expulsar cartucho',
+      btnSelect: 'Select: volver al inicio',
+      btnStart: 'Start: siguiente cartucho',
+      viewCode: 'Ver código en GitHub',
+      readCase: 'Leer caso de estudio',
+      goToAbout: 'Ir a Sobre mí',
+      promptCode: '▶ A · VER CÓDIGO',
+      promptCase: '▶ A · CASO DE ESTUDIO',
+      promptAbout: '▶ A · SOBRE MÍ',
+      teamWith: ' Realizado en equipo junto a '
+    },
+    dlg: {
+      close: 'Cerrar'
+    },
+    skills: {
+      kick: '02 · SKILLS',
+      title: 'Lo que sé hacer'
+    },
+    journey: {
+      kick: '03 · RUTA',
+      title: 'Trayectoria',
+      cRole: 'Becario I+D · Correos × UAH',
+      cDate: 'Jun. 2026 a la actualidad',
+      cDesc: 'API core en <b>FastAPI</b> para automatizar el análisis de ocupación de casilleros postales: autenticación <b>JWT</b> para las PDAs, validación y guardado de fotos y colas <b>Redis</b> hacia el servicio de visión artificial (<b>YOLO</b>). Apoyo en el despliegue con <b>Docker Compose</b>, <b>PostgreSQL</b> y <b>Nginx</b>, y en el etiquetado de imágenes para entrenar la IA.',
+      aRole: 'Becario I+D · ALTEN × UAH',
+      aDate: 'Oct. 2024 a Jun. 2026',
+      aDesc: 'Portal web docente en <b>Flask + SQLAlchemy</b> para el aprendizaje de español en <b>Realidad Mixta</b> (niños de 7 a 10 años): acceso por roles (profesores, gestores de centro, administradores y alumnos), autenticación corporativa por <b>LDAP</b> con fallback local, limitación de intentos con <b>Redis</b>, tareas programadas de mantenimiento y 59 tests con <b>pytest</b>. Diseño conjunto de la base de datos en <b>MariaDB</b> y despliegue multi-contenedor con <b>Docker Compose</b> y <b>Nginx</b>.',
+      iRole: 'Dependiente · Inditex / Parfois',
+      iDate: '2024',
+      iDesc: 'Atención al cliente e incidencias en caja: comunicación y trabajo en equipo bajo presión.'
+    },
+    about: {
+      kick: '04 · YO',
+      title: 'Más allá del código',
+      polAria: 'Foto polaroid de Marcos',
+      lead: 'Mi vocación por la tecnología nació de una curiosidad simple, entender cómo funcionan las cosas por dentro. Me apasiona el camino que recorre la información, desde la arquitectura de red y la seguridad en cada salto hasta los servicios de backend que sostienen el servicio. Actualmente curso el último año de Ingeniería Telemática en la Universidad de Alcalá, donde solo me falta una asignatura y el Trabajo de Fin de Grado vinculado a mi proyecto en ALTEN. Cuento con un nivel en inglés de B2 y busco aportar valor resolviendo problemas reales en entornos de producción.',
+      h1: '<b>Curiosidad técnica</b>Esta consola interactiva es un guiño a las tardes jugando a la Nintendo DS con mi hermano y a ese interés constante por cacharrear que me impulsó hacia la ingeniería.',
+      h2: '<b>Comunidad y divulgación</b>Cotutor voluntario en Technovation Girls UAH y colaborador en el congreso CNSM. Disfruto colaborando en iniciativas que impulsan el talento técnico y el trabajo en equipo.',
+      h3: '<b>Mente activa</b>Fuera del teclado me encontrarás practicando deporte, jugando al fútbol, dibujando, jugando juegos de mesa, disfrutando de series y anime o pasando tiempo de calidad con mis amigos y/o familia.',
+      h4: '<b>Gestión y empatía</b>Mi experiencia en Inditex y Parfois me enseñó a comunicarme con claridad, mantener la templanza en momentos de alta exigencia y cuidar siempre el trato a los demás.'
+    },
+    contact: {
+      kick: '05 · CONTACTO',
+      title: 'Hablamos',
+      lead: 'Listo para incorporarme en Madrid desde enero o febrero de 2027 mediante convenio de prácticas de mínimo 450 horas y máximo 900 horas, hasta 35 horas semanales, en formato híbrido o presencial y compatible con mi última asignatura. Si buscas un perfil motivado para redes, ciberseguridad, backend, infraestructura/DevOps o IA, contáctame directamente:',
+      emailLbl: 'EMAIL',
+      showEmail: 'Mostrar email',
+      compose: 'Escribir',
+      copy: 'Copiar',
+      copied: '¡Copiado!',
+      phoneLbl: 'TELÉFONO',
+      showPhone: 'Ver teléfono',
+      call: 'Llamar'
+    },
+    status: {
+      badge: 'ESTADO · DISPONIBLE',
+      title: 'Incorporación 2027',
+      locLbl: 'UBICACIÓN & FORMATO',
+      locVal: 'Madrid · Híbrido o Presencial',
+      hoursLbl: 'JORNADA',
+      hoursVal: 'Hasta 35 h / semana',
+      durLbl: 'DURACIÓN',
+      durVal: 'Mínimo 450 h y máximo 900 h (convenio UAH)',
+      areasLbl: 'ÁREAS DE INTERÉS',
+      areasVal: 'Redes, Ciber, Backend, Infra/DevOps & IA'
+    },
+    footer: {
+      btnCv: 'Descargar CV',
+      copy: 'Marcos Santos Aragón · Madrid, España'
+    }
+  },
+  en: {
+    meta: {
+      title: 'Marcos Santos · Telematics Engineering',
+      desc: 'Portfolio of Marcos Santos, final-year Telematics Engineering student (UAH) seeking internships in Madrid (Jan/Feb 2027). Networking, cybersecurity, backend, DevOps & AI.',
+      ogTitle: 'Marcos Santos · Telematics & Networks',
+      ogDesc: 'FastAPI, Redis, Docker, Asterisk and networking. Interactive portfolio.'
+    },
+    nav: {
+      skip: 'Skip to content',
+      brandAria: 'Back to top',
+      menuAria: 'Open menu',
+      home: 'Home',
+      projects: 'Projects',
+      skills: 'Skills',
+      journey: 'Experience',
+      about: 'About me',
+      contact: 'Contact',
+      soundOn: 'Sound: on',
+      soundOff: 'Sound: off',
+      langAria: 'Switch language to Spanish'
+    },
+    hero: {
+      lead: 'Final-year <strong>Telematics Engineering</strong> student (UAH) with hands-on experience in real R&D projects alongside Correos and ALTEN. <strong>Seeking an internship in Madrid starting January/February 2027</strong> in networking, cybersecurity, backend, infra/DevOps or AI.',
+      tag1: 'Internship Jan/Feb 2027',
+      tag2: 'Madrid · 450 to 900 h',
+      tag3: 'Up to 35 h/week',
+      tag4: 'English B2',
+      btnCv: 'Download CV',
+      btnGh: 'GitHub',
+      hint: 'Scroll to insert a cartridge (or use ← →)',
+      srItems: [
+        'Correos Logistics API: FastAPI, Redis, Docker Compose, PostgreSQL, JWT, YOLO.',
+        'ALTEN Mixed Reality LMS: Flask, SQLAlchemy, MariaDB, LDAP, Redis, Docker Compose, pytest.',
+        'Marchel VoIP PBX: Asterisk 22, PJSIP, Flask, MariaDB, UAH.',
+        'NiKA Distributed Chat: Python, Sockets TCP/UDP, select(), P2P, Flask, WebSockets, AWS Lambda.'
+      ]
+    },
+    console: {
+      stageAria: 'Handheld console with projects as cartridges',
+      cartAria: 'Eject cartridge',
+      eject: 'EJECT',
+      btnL: 'L button: previous cartridge',
+      btnR: 'R button: next cartridge',
+      btnPrev: 'Previous cartridge',
+      btnNext: 'Next cartridge',
+      btnA: 'A button: open code or case study',
+      btnB: 'B button: eject cartridge',
+      btnSelect: 'Select: back to start',
+      btnStart: 'Start: next cartridge',
+      viewCode: 'View code on GitHub',
+      readCase: 'Read case study',
+      goToAbout: 'Go to About me',
+      promptCode: '▶ A · VIEW CODE',
+      promptCase: '▶ A · CASE STUDY',
+      promptAbout: '▶ A · ABOUT ME',
+      teamWith: ' Built in a team alongside '
+    },
+    dlg: {
+      close: 'Close'
+    },
+    skills: {
+      kick: '02 · SKILLS',
+      title: 'Technical Skills'
+    },
+    journey: {
+      kick: '03 · JOURNEY',
+      title: 'Experience',
+      cRole: 'R&D Intern · Correos × UAH',
+      cDate: 'Jun. 2026 – Present',
+      cDesc: 'Core API in <b>FastAPI</b> to automate postal locker occupancy analysis: <b>JWT</b> authentication for PDAs, photo validation and storage, and <b>Redis</b> queues to the computer vision service (<b>YOLO</b>). Supported deployment with <b>Docker Compose</b>, <b>PostgreSQL</b>, and <b>Nginx</b>, and image labeling for AI model training.',
+      aRole: 'R&D Intern · ALTEN × UAH',
+      aDate: 'Oct. 2024 – Jun. 2026',
+      aDesc: 'Teaching management web portal in <b>Flask + SQLAlchemy</b> for learning Spanish in <b>Mixed Reality</b> (children aged 7–10): role-based access control (teachers, school managers, admins, and students), corporate authentication via <b>LDAP</b> with local fallback, rate limiting with <b>Redis</b>, automated maintenance tasks, and 59 tests with <b>pytest</b>. Joint database design in <b>MariaDB</b> and multi-container deployment with <b>Docker Compose</b> and <b>Nginx</b>.',
+      iRole: 'Retail Assistant · Inditex / Parfois',
+      iDate: '2024',
+      iDesc: 'Customer service and cash desk management: communication and teamwork under high pressure.'
+    },
+    about: {
+      kick: '04 · ABOUT',
+      title: 'Beyond the Code',
+      polAria: 'Polaroid photo of Marcos',
+      lead: 'My passion for technology began with a simple curiosity: understanding how things work from the inside. I am fascinated by the journey data takes, from network architecture and hop-by-hop security to the backend services powering the system. I am currently in my final year of Telematics Engineering at Universidad de Alcalá, with just one course remaining and my Bachelor\'s Thesis tied to my project at ALTEN. I hold a B2 level in English and look forward to adding value by solving real-world problems in production environments.',
+      h1: '<b>Technical Curiosity</b>This interactive console is a nod to afternoons playing Nintendo DS with my brother and that constant itch to tinker that drove me into engineering.',
+      h2: '<b>Community & Outreach</b>Volunteer co-mentor at Technovation Girls UAH and collaborator at the CNSM conference. I enjoy contributing to initiatives that nurture tech talent and teamwork.',
+      h3: '<b>Active Mind</b>Away from the keyboard, you\'ll find me playing sports, soccer, drawing, board games, enjoying series and anime, or spending quality time with friends and family.',
+      h4: '<b>Management & Empathy</b>My customer-facing experience at Inditex and Parfois taught me clear communication, staying composed under high pressure, and always treating people with care.'
+    },
+    contact: {
+      kick: '05 · CONTACT',
+      title: 'Let\'s Talk',
+      lead: 'Ready to join a team in Madrid starting January or February 2027 under an internship agreement (minimum 450 hours, maximum 900 hours, up to 35 hours/week, hybrid or on-site, compatible with my final university course). If you are looking for a motivated candidate for networking, cybersecurity, backend, infrastructure/DevOps, or AI, reach out directly:',
+      emailLbl: 'EMAIL',
+      showEmail: 'Show email',
+      compose: 'Compose',
+      copy: 'Copy',
+      copied: 'Copied!',
+      phoneLbl: 'PHONE',
+      showPhone: 'Show phone',
+      call: 'Call'
+    },
+    status: {
+      badge: 'STATUS · AVAILABLE',
+      title: '2027 Availability',
+      locLbl: 'LOCATION & FORMAT',
+      locVal: 'Madrid · Hybrid or On-site',
+      hoursLbl: 'HOURS',
+      hoursVal: 'Up to 35 h / week',
+      durLbl: 'DURATION',
+      durVal: 'Min. 450 h, max. 900 h (UAH agreement)',
+      areasLbl: 'AREAS OF INTEREST',
+      areasVal: 'Networking, Cyber, Backend, Infra/DevOps & AI'
+    },
+    footer: {
+      btnCv: 'Download CV',
+      copy: 'Marcos Santos Aragón · Madrid, Spain'
+    }
+  }
+};
+
+let currentLang = (() => {
+  try {
+    const saved = localStorage.getItem('lang');
+    if (saved === 'es' || saved === 'en') return saved;
+  } catch (e) {}
+  return 'es';
+})();
+
 const P = [
   {
-    t: 'Correos Logistics API', c: 'API Core & Docker · Beca I+D', col: '#FFD100', c2: '#F2A900', c3: '#FFE76A', tx: '#0b2f6b', bg: '#fff4bf', logo: './static/images/logo-correos.avif', logoRound: 1, priv: 1, cs: {
-      ctx: 'Sistema para digitalizar y controlar automáticamente el volumen de correspondencia en los casilleros de las Unidades de Reparto de Correos. Los carteros hacen fotos con su PDA al empezar y terminar la jornada, un servicio de visión artificial (YOLO) analiza la carga de las baldas y los supervisores consultan los resultados desde un panel web.',
-      sections: [
-        {
-          h: 'Visión general y mi rol',
-          p: 'Dentro del equipo del servidor, mi responsabilidad principal fue desarrollar la API core que conecta las PDAs Android con el sistema, además de colaborar en el despliegue con Docker Compose y Nginx y en el etiquetado de imágenes para entrenar el modelo de IA.',
-          ul: []
-        },
-        {
-          h: 'Qué hice (API core, infraestructura y datos)',
-          ul: [
-            'API móvil en FastAPI: autenticación de carteros con tokens JWT (acceso y renovación) y validación de permisos y unidad de reparto.',
-            'Recepción de fotografías desde las PDAs: comprobación del formato del nombre y metadatos, guardado organizado en disco evitando duplicados, registro en PostgreSQL y envío a una cola Redis para que el análisis de IA no frene la subida.',
-            'Consulta de resultados recientes para devolver a la PDA las fotos de los últimos días junto con la ocupación detectada por balda.',
-            'Apoyo en infraestructura y entrenamiento: puesta a punto del entorno multi-contenedor con Docker Compose y el proxy Nginx, y etiquetado de imágenes de casilleros para el dataset de entrenamiento de YOLO.'
-          ]
-        }
-      ],
-      learn: 'Desacoplar la recepción de fotos mediante colas en Redis permite que la PDA reciba respuesta al instante sin esperar al análisis de la imagen, manteniendo el sistema ágil incluso en horas punta.'
-    }, d: 'API core en FastAPI para analizar la ocupación de casilleros en Unidades de Reparto: JWT para las PDAs, colas Redis hacia visión artificial (YOLO), PostgreSQL, Docker Compose y Nginx.', tg: ['FastAPI', 'Redis', 'PostgreSQL', 'JWT', 'Docker', 'Nginx']
+    t: 'Correos Logistics API', col: '#FFD100', c2: '#F2A900', c3: '#FFE76A', tx: '#0b2f6b', bg: '#fff4bf', logo: './static/images/logo-correos.avif', logoRound: 1, priv: 1,
+    es: {
+      c: 'API Core & Docker · Beca I+D',
+      d: 'API core en FastAPI para analizar la ocupación de casilleros en Unidades de Reparto: JWT para las PDAs, colas Redis hacia visión artificial (YOLO), PostgreSQL, Docker Compose y Nginx.',
+      tg: ['FastAPI', 'Redis', 'PostgreSQL', 'JWT', 'Docker', 'Nginx'],
+      cs: {
+        ctx: 'Sistema para digitalizar y controlar automáticamente el volumen de correspondencia en los casilleros de las Unidades de Reparto de Correos. Los carteros hacen fotos con su PDA al empezar y terminar la jornada, un servicio de visión artificial (YOLO) analiza la carga de las baldas y los supervisores consultan los resultados desde un panel web.',
+        sections: [
+          {
+            h: 'Visión general y mi rol',
+            p: 'Dentro del equipo del servidor, mi responsabilidad principal fue desarrollar la API core que conecta las PDAs Android con el sistema, además de colaborar en el despliegue con Docker Compose y Nginx y en el etiquetado de imágenes para entrenar el modelo de IA.',
+            ul: []
+          },
+          {
+            h: 'Qué hice (API core, infraestructura y datos)',
+            ul: [
+              'API móvil en FastAPI: autenticación de carteros con tokens JWT (acceso y renovación) y validación de permisos y unidad de reparto.',
+              'Recepción de fotografías desde las PDAs: comprobación del formato del nombre y metadatos, guardado organizado en disco evitando duplicados, registro en PostgreSQL y envío a una cola Redis para que el análisis de IA no frene la subida.',
+              'Consulta de resultados recientes para devolver a la PDA las fotos de los últimos días junto con la ocupación detectada por balda.',
+              'Apoyo en infraestructura y entrenamiento: puesta a punto del entorno multi-contenedor con Docker Compose y el proxy Nginx, y etiquetado de imágenes de casilleros para el dataset de entrenamiento de YOLO.'
+            ]
+          }
+        ],
+        learn: 'Desacoplar la recepción de fotos mediante colas en Redis permite que la PDA reciba respuesta al instante sin esperar al análisis de la imagen, manteniendo el sistema ágil incluso en horas punta.'
+      }
+    },
+    en: {
+      c: 'Core API & Docker · R&D Fellowship',
+      d: 'Core FastAPI API to analyze locker occupancy in Delivery Units: JWT for PDAs, Redis queues to computer vision (YOLO), PostgreSQL, Docker Compose, and Nginx.',
+      tg: ['FastAPI', 'Redis', 'PostgreSQL', 'JWT', 'Docker', 'Nginx'],
+      cs: {
+        ctx: 'System to automatically digitize and monitor mail volume across locker shelves at Correos Delivery Units. Mail carriers take photos with their PDAs at shift start and end, a computer vision service (YOLO) analyzes shelf capacity, and supervisors review the results on a web dashboard.',
+        sections: [
+          {
+            h: 'Overview & My Role',
+            p: 'Within the server team, my primary responsibility was developing the core API connecting Android PDAs to the system, along with assisting in multi-container deployment using Docker Compose and Nginx, and labeling locker photos to train the AI model.',
+            ul: []
+          },
+          {
+            h: 'What I Built (Core API, Infrastructure & Data)',
+            ul: [
+              'Mobile API in FastAPI: mail carrier authentication with JWT tokens (access and refresh) plus permission and delivery unit validation.',
+              'PDA photo ingestion: filename and metadata validation, structured deduplicated disk storage, registration in PostgreSQL, and enqueuing to Redis so AI analysis never blocks mobile uploads.',
+              'Recent results lookup returning recent photo history and per-shelf detected occupancy to the PDA.',
+              'Infrastructure & training support: setting up the multi-container environment with Docker Compose and Nginx proxy, and annotating locker images for the YOLO training dataset.'
+            ]
+          }
+        ],
+        learn: 'Decoupling image ingestion via Redis queues gives the PDA an instant response without waiting for AI analysis, keeping the system responsive even during peak delivery hours.'
+      }
+    }
   },
   {
-    t: 'ALTEN Mixed Reality LMS', c: 'Portal Web & BD · Beca I+D', col: '#FF6B78', c2: '#C2182E', c3: '#FF9AA3', tx: '#3a0610', bg: '#ffdce0', logo: './static/images/Logo_ALTEN_Black-1.svg', priv: 1, cs: {
-      ctx: 'Plataforma educativa en Realidad Mixta para incentivar el aprendizaje de español como lengua extranjera en niños de 7 a 10 años. Al ser alumnos pequeños, los escenarios se diseñaron en Realidad Mixta para que interactúen por voz sin aislarse del aula.',
-      sections: [
-        {
-          h: 'Visión general y reparto del equipo',
-          p: 'En un equipo de 4 personas, dos compañeras crearon los escenarios de Realidad Mixta y otra compañera desarrolló la API en tiempo real que habla con las gafas (voz e IA). Mi parte fue el portal web de gestión docente y administración de centros y dispositivos, además de diseñar e integrar juntos la base de datos y el despliegue del sistema.',
-          ul: []
-        },
-        {
-          h: 'Qué hice (gestión docente, centros y dispositivos)',
-          ul: [
-            'Portal web completo en Flask + SQLAlchemy con acceso diferenciado por perfil: administradores, gestores de centro, profesores y alumnos, de modo que cada sede y docente solo ve sus propios datos y calificaciones.',
-            'Administración de centros educativos, inventario de gafas de Realidad Mixta, altas de usuarios/clases e importación masiva desde Excel.',
-            'Gestión docente: creación de sesiones de clase para las gafas mediante un código PIN temporal, seguimiento en vivo y consulta de notas y transcripciones.',
-            'Autenticación corporativa por LDAP (con acceso local alternativo), límite de intentos con Redis, tareas automáticas de limpieza y batería de 59 tests en pytest.'
-          ]
-        },
-        {
-          h: 'Trabajo conjunto en el sistema',
-          ul: [
-            'Diseño compartido de la base de datos en MariaDB para unir el portal docente con la API en tiempo real de las gafas.',
-            'Despliegue del sistema completo en contenedores con Docker Compose y acceso seguro HTTPS mediante Nginx.'
-          ]
-        }
-      ],
-      learn: 'Diseñar un portal web claro para profesores y gestores separado de la API en tiempo real de las gafas, manteniendo un esquema de datos común y un acceso seguro por roles.'
-    }, d: 'Portal web de gestión docente, centros y dispositivos en Flask + MariaDB para enseñar español en Realidad Mixta a niños de 7 a 10 años: RBAC, LDAP, Redis, pytest y Docker + Nginx.', tg: ['Flask', 'MariaDB', 'LDAP', 'Redis', 'pytest', 'Docker']
+    t: 'ALTEN Mixed Reality LMS', col: '#FF6B78', c2: '#C2182E', c3: '#FF9AA3', tx: '#3a0610', bg: '#ffdce0', logo: './static/images/Logo_ALTEN_Black-1.svg', priv: 1,
+    es: {
+      c: 'Portal Web & BD · Beca I+D',
+      d: 'Portal web de gestión docente, centros y dispositivos en Flask + MariaDB para enseñar español en Realidad Mixta a niños de 7 a 10 años: RBAC, LDAP, Redis, pytest y Docker + Nginx.',
+      tg: ['Flask', 'MariaDB', 'LDAP', 'Redis', 'pytest', 'Docker'],
+      cs: {
+        ctx: 'Plataforma educativa en Realidad Mixta para incentivar el aprendizaje de español como lengua extranjera en niños de 7 a 10 años. Al ser alumnos pequeños, los escenarios se diseñaron en Realidad Mixta para que interactúen por voz sin aislarse del aula.',
+        sections: [
+          {
+            h: 'Visión general y reparto del equipo',
+            p: 'En un equipo de 4 personas, dos compañeras crearon los escenarios de Realidad Mixta y otra compañera desarrolló la API en tiempo real que habla con las gafas (voz e IA). Mi parte fue el portal web de gestión docente y administración de centros y dispositivos, además de diseñar e integrar juntos la base de datos y el despliegue del sistema.',
+            ul: []
+          },
+          {
+            h: 'Qué hice (gestión docente, centros y dispositivos)',
+            ul: [
+              'Portal web completo en Flask + SQLAlchemy con acceso diferenciado por perfil: administradores, gestores de centro, profesores y alumnos, de modo que cada sede y docente solo ve sus propios datos y calificaciones.',
+              'Administración de centros educativos, inventario de gafas de Realidad Mixta, altas de usuarios/clases e importación masiva desde Excel.',
+              'Gestión docente: creación de sesiones de clase para las gafas mediante un código PIN temporal, seguimiento en vivo y consulta de notas y transcripciones.',
+              'Autenticación corporativa por LDAP (con acceso local alternativo), límite de intentos con Redis, tareas automáticas de limpieza y batería de 59 tests en pytest.'
+            ]
+          },
+          {
+            h: 'Trabajo conjunto en el sistema',
+            ul: [
+              'Diseño compartido de la base de datos en MariaDB para unir el portal docente con la API en tiempo real de las gafas.',
+              'Despliegue del sistema completo en contenedores con Docker Compose y acceso seguro HTTPS mediante Nginx.'
+            ]
+          }
+        ],
+        learn: 'Diseñar un portal web claro para profesores y gestores separado de la API en tiempo real de las gafas, manteniendo un esquema de datos común y un acceso seguro por roles.'
+      }
+    },
+    en: {
+      c: 'Web Portal & DB · R&D Fellowship',
+      d: 'Teaching management web portal, schools, and devices in Flask + MariaDB to teach Spanish in Mixed Reality to children aged 7-10: RBAC, LDAP, Redis, pytest, and Docker + Nginx.',
+      tg: ['Flask', 'MariaDB', 'LDAP', 'Redis', 'pytest', 'Docker'],
+      cs: {
+        ctx: 'Mixed Reality educational platform designed to enhance Spanish language learning for children aged 7 to 10. To keep young students engaged, scenarios were created in Mixed Reality so they interact by voice without feeling isolated from their classroom.',
+        sections: [
+          {
+            h: 'Overview & Team Distribution',
+            p: 'In a 4-person team, two peers created the Mixed Reality 3D scenarios while another developed the real-time API communicating with the headsets (voice and AI). My responsibility was the teaching management web portal, schools, and device administration, alongside co-designing the database and system deployment.',
+            ul: []
+          },
+          {
+            h: 'What I Built (Teaching Portal, Schools & Devices)',
+            ul: [
+              'Full-stack web portal in Flask + SQLAlchemy with role-based access control: administrators, center managers, teachers, and students, ensuring each school and teacher only accesses their own data and grades.',
+              'School administration, Mixed Reality headset inventory, user/class creation, and batch enrollment via Excel imports.',
+              'Classroom management: temporary PIN session generation for headsets, live session tracking, and grade/transcript review.',
+              'Corporate LDAP authentication (with local fallback), login rate limiting via Redis, automated background cleanup tasks, and a 59-test suite with pytest.'
+            ]
+          },
+          {
+            h: 'Collaborative System Integration',
+            ul: [
+              'Joint database architecture in MariaDB connecting the teaching portal with the real-time headset API.',
+              'Full-system containerized deployment using Docker Compose and secure HTTPS proxying via Nginx.'
+            ]
+          }
+        ],
+        learn: 'Designing an intuitive web portal for teachers and managers cleanly decoupled from the headset real-time API, maintaining a unified data schema and secure role-based access.'
+      }
+    }
   },
-  { t: 'Marchel VoIP PBX', c: 'Telefonía IP & redes', cc: 'VOIP PBX', ct: 'Marchel', csub: 'ASTERISK 22 · SIP', col: '#5EE38A', c2: '#1f9a3f', c3: '#A6F7C2', tx: '#082417', bg: '#d4fae0', repo: 'https://github.com/ByMarcksuz/Marchel-Asterisk', logo: './static/images/logo-marchel.avif', d: 'Centralita VoIP en Asterisk 22 con PJSIP (IVR multinivel, colas, buzón, conferencias, Festival TTS, grabación y tarificación MariaDB + panel Flask), desarrollada para Laboratorio de Redes, Señales y Sistemas (UAH).', coop: { name: 'Chelsea Fernández Hernández', url: 'https://www.linkedin.com/in/chelsea-fernandez-hernandez-64a339189/' }, tg: ['Asterisk 22', 'PJSIP', 'Flask', 'MariaDB', 'VoIP'] },
   {
-    t: 'NiKA Distributed Chat', c: 'Sistemas & redes', cc: 'CHAT & REDES', ct: 'NiKA', csub: 'SOCKETS · P2P · CLOUD', col: '#2ED3E6', c2: '#0c8fa3', c3: '#9BF0FA', tx: '#052f38', bg: '#d2f6fb', logo: './static/images/logo.nika.avif', priv: 1, cs: {
-      ctx: 'Sistema de mensajería y chat distribuido en tiempo real desarrollado para la asignatura Laboratorio de Redes, Señales y Sistemas (UAH) en equipo junto a Chelsea Fernández Hernández. El proyecto aborda desde los fundamentos de bajo nivel de comunicación en red con sockets no bloqueantes (modelos cliente-servidor y P2P híbrido en Python puro) hasta su evolución a una arquitectura web y cloud en tiempo real con WebSockets, persistencia relacional en Amazon RDS y microservicios serverless en AWS Lambda.',
-      sections: [
-        {
-          h: 'Arquitectura de bajo nivel: Sockets TCP/UDP no bloqueantes y P2P',
-          p: 'Implementación directa sobre la API de sockets POSIX de Python con multiplexación I/O mediante select.select(), gestionando decenas de conexiones concurrentes en un único hilo de ejecución sin bloqueos ni sobrecarga multihilo:',
-          ul: [
-            'Modelo Cliente-Servidor centralizado TCP: servidor con SO_REUSEADDR y select() para gestión de conexiones entrantes, autenticación, administración dinámica de salas (creación, unión y eliminación automática al vaciarse), mensajes privados (usuario:mensaje), difusión global (TODOS:mensaje) y transferencia de ficheros.',
-            'Modelo Híbrido P2P: servidor TCP ligero como directorio para registro y descubrimiento dinámico de participantes (IP y puerto UDP), y comunicación directa entre pares mediante datagramas UDP para eliminar cuellos de botella en el servidor central.',
-            'Cliente con triple multiplexación en select(): escucha y procesamiento simultáneo de la entrada del usuario por teclado (sys.stdin), notificaciones del servidor central (TCP) y paquetes de chat directo entre clientes (UDP).',
-            'Experiencia de usuario en terminal: interfaz con formato visual estilo burbujas de chat, alineación diferenciada según el origen (propios a la izquierda, recibidos a la derecha, sistema al centro) y control robusto ante desconexiones inesperadas.'
-          ]
-        },
-        {
-          h: 'Evolución Web y Cloud: WebSockets, Amazon RDS y Serverless en AWS',
-          p: 'Ampliación del servicio hacia un entorno web distribuido y arquitectura en la nube orientada a eventos:',
-          ul: [
-            'Plataforma web en tiempo real: aplicación interactiva con Flask y Flask-SocketIO (WebSockets bidireccionales con eventos de conexión, desconexión y salas dinámicas join_room y leave_room).',
-            'Persistencia y métricas de uso: integración con base de datos relacional MySQL/MariaDB (AWS RDS) para registro de usuarios, almacenamiento estructurado de mensajes, fecha, tipo de envío y volumen en bytes para panel de estadísticas.',
-            'Microservicio Serverless de facturación: función en AWS Lambda desarrollada en Python con Boto3 y PyMySQL para tarificar automáticamente el tráfico de datos transmitido en diferido o por evento según el tamaño del mensaje (coste por KB procesado).'
-          ]
-        }
-      ],
-      learn: 'Profundo dominio de la pila de transporte (TCP y UDP) y de la multiplexación I/O con select() a bajo nivel para diseñar arquitecturas de red concurrentes de alto rendimiento sin hilos, junto con la transición hacia aplicaciones web modernas con WebSockets y cómputo desacoplado en la nube con AWS Lambda.',
-      note: 'Repositorio temporalmente privado: se subirá próximamente a GitHub (actualmente en preparación y ordenación de ramas). Encantado de explicar la arquitectura y el código en una entrevista.'
-    }, d: 'Sistema de mensajería y chat distribuido en tiempo real para Laboratorio de Redes, Señales y Sistemas (UAH): sockets TCP/UDP no bloqueantes con select() (cliente-servidor y P2P), evolucionado a app web con Flask, WebSockets, base de datos y facturación serverless con AWS Lambda (se subirá pronto a GitHub).', coop: { name: 'Chelsea Fernández Hernández', url: 'https://www.linkedin.com/in/chelsea-fernandez-hernandez-64a339189/' }, tg: ['Python', 'Sockets TCP/UDP', 'select()', 'P2P', 'WebSockets', 'AWS Lambda']
+    t: 'Marchel VoIP PBX', cc: 'VOIP PBX', ct: 'Marchel', csub: 'ASTERISK 22 · SIP', col: '#5EE38A', c2: '#1f9a3f', c3: '#A6F7C2', tx: '#082417', bg: '#d4fae0', repo: 'https://github.com/ByMarcksuz/Marchel-Asterisk', logo: './static/images/logo-marchel.avif',
+    coop: { name: 'Chelsea Fernández Hernández', url: 'https://www.linkedin.com/in/chelsea-fernandez-hernandez-64a339189/' },
+    es: {
+      c: 'Telefonía IP & redes',
+      d: 'Centralita VoIP en Asterisk 22 con PJSIP (IVR multinivel, colas, buzón, conferencias, Festival TTS, grabación y tarificación MariaDB + panel Flask), desarrollada para Laboratorio de Redes, Señales y Sistemas (UAH).',
+      tg: ['Asterisk 22', 'PJSIP', 'Flask', 'MariaDB', 'VoIP']
+    },
+    en: {
+      c: 'IP Telephony & Networks',
+      d: 'VoIP PBX on Asterisk 22 with PJSIP (multilevel IVR, queues, voicemail, conferences, Festival TTS, recording, and MariaDB billing + Flask dashboard), built for Networks, Signals and Systems Lab (UAH).',
+      tg: ['Asterisk 22', 'PJSIP', 'Flask', 'MariaDB', 'VoIP']
+    }
   },
-  { t: 'Bonus level', c: 'Sobre mí · Desbloqueado', col: '#CDB8F5', c2: '#7a5fd1', c3: '#E6DAFB', tx: '#241547', bg: '#ece3fb', logo: 'data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2048%2048%27%20fill=%27none%27%20stroke=%27%234b2f9a%27%20stroke-width=%273.2%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M13%2014h22a8%208%200%200%201%208%208v6a6%206%200%200%201-10.5%204L30%2029H18l-2.5%203A6%206%200%200%201%205%2028v-6a8%208%200%200%201%208-8z%27/%3E%3Cpath%20d=%27M15%2020v6M12%2023h6%27/%3E%3Ccircle%20cx=%2733%27%20cy=%2721%27%20r=%271.4%27%20fill=%27%234b2f9a%27/%3E%3Ccircle%20cx=%2737%27%20cy=%2725%27%20r=%271.4%27%20fill=%27%234b2f9a%27/%3E%3C/svg%3E', bonus: 1, repo: '#sobre-mi', d: 'Esta consola nació de recordar las tardes jugando a la Nintendo DS con mi hermano. Fuera del teclado me encontrarás en eventos como CNSM o Technovation Girls, dibujando, haciendo deporte, jugando videojuegos o escuchando música.', tg: ['Nintendo DS', 'Congreso CNSM', 'Technovation', 'Deporte & Arte'] }];
+  {
+    t: 'NiKA Distributed Chat', cc: 'CHAT & REDES', ct: 'NiKA', csub: 'SOCKETS · P2P · CLOUD', col: '#2ED3E6', c2: '#0c8fa3', c3: '#9BF0FA', tx: '#052f38', bg: '#d2f6fb', logo: './static/images/logo.nika.avif', priv: 1,
+    coop: { name: 'Chelsea Fernández Hernández', url: 'https://www.linkedin.com/in/chelsea-fernandez-hernandez-64a339189/' },
+    es: {
+      c: 'Sistemas & redes',
+      d: 'Sistema de mensajería y chat distribuido en tiempo real para Laboratorio de Redes, Señales y Sistemas (UAH): sockets TCP/UDP no bloqueantes con select() (cliente-servidor y P2P), evolucionado a app web con Flask, WebSockets, base de datos y facturación serverless con AWS Lambda (se subirá pronto a GitHub).',
+      tg: ['Python', 'Sockets TCP/UDP', 'select()', 'P2P', 'WebSockets', 'AWS Lambda'],
+      cs: {
+        ctx: 'Sistema de mensajería y chat distribuido en tiempo real desarrollado para la asignatura Laboratorio de Redes, Señales y Sistemas (UAH) en equipo junto a Chelsea Fernández Hernández. El proyecto aborda desde los fundamentos de bajo nivel de comunicación en red con sockets no bloqueantes (modelos cliente-servidor y P2P híbrido en Python puro) hasta su evolución a una arquitectura web y cloud en tiempo real con WebSockets, persistencia relacional en Amazon RDS y microservicios serverless en AWS Lambda.',
+        sections: [
+          {
+            h: 'Arquitectura de bajo nivel: Sockets TCP/UDP no bloqueantes y P2P',
+            p: 'Implementación directa sobre la API de sockets POSIX de Python con multiplexación I/O mediante select.select(), gestionando decenas de conexiones concurrentes en un único hilo de ejecución sin bloqueos ni sobrecarga multihilo:',
+            ul: [
+              'Modelo Cliente-Servidor centralizado TCP: servidor con SO_REUSEADDR y select() para gestión de conexiones entrantes, autenticación, administración dinámica de salas (creación, unión y eliminación automática al vaciarse), mensajes privados (usuario:mensaje), difusión global (TODOS:mensaje) y transferencia de ficheros.',
+              'Modelo Híbrido P2P: servidor TCP ligero como directorio para registro y descubrimiento dinámico de participantes (IP y puerto UDP), y comunicación directa entre pares mediante datagramas UDP para eliminar cuellos de botella en el servidor central.',
+              'Cliente con triple multiplexación en select(): escucha y procesamiento simultáneo de la entrada del usuario por teclado (sys.stdin), notificaciones del servidor central (TCP) y paquetes de chat directo entre clientes (UDP).',
+              'Experiencia de usuario en terminal: interfaz con formato visual estilo burbujas de chat, alineación diferenciada según el origen (propios a la izquierda, recibidos a la derecha, sistema al centro) y control robusto ante desconexiones inesperadas.'
+            ]
+          },
+          {
+            h: 'Evolución Web y Cloud: WebSockets, Amazon RDS y Serverless en AWS',
+            p: 'Ampliación del servicio hacia un entorno web distribuido y arquitectura en la nube orientada a eventos:',
+            ul: [
+              'Plataforma web en tiempo real: aplicación interactiva con Flask y Flask-SocketIO (WebSockets bidireccionales con eventos de conexión, desconexión y salas dinámicas join_room y leave_room).',
+              'Persistencia y métricas de uso: integración con base de datos relacional MySQL/MariaDB (AWS RDS) para registro de usuarios, almacenamiento estructurado de mensajes, fecha, tipo de envío y volumen en bytes para panel de estadísticas.',
+              'Microservicio Serverless de facturación: función en AWS Lambda desarrollada en Python con Boto3 y PyMySQL para tarificar automáticamente el tráfico de datos transmitido en diferido o por evento según el tamaño del mensaje (coste por KB procesado).'
+            ]
+          }
+        ],
+        learn: 'Profundo dominio de la pila de transporte (TCP y UDP) y de la multiplexación I/O con select() a bajo nivel para diseñar arquitecturas de red concurrentes de alto rendimiento sin hilos, junto con la transición hacia aplicaciones web modernas con WebSockets y cómputo desacoplado en la nube con AWS Lambda.',
+        note: 'Repositorio temporalmente privado: se subirá próximamente a GitHub (actualmente en preparación y ordenación de ramas). Encantado de explicar la arquitectura y el código en una entrevista.'
+      }
+    },
+    en: {
+      c: 'Systems & Networks',
+      d: 'Real-time distributed messaging & chat system for Networks, Signals and Systems Lab (UAH): non-blocking TCP/UDP sockets with select() (client-server and P2P), evolved into a web app with Flask, WebSockets, database, and serverless billing with AWS Lambda (coming soon to GitHub).',
+      tg: ['Python', 'TCP/UDP Sockets', 'select()', 'P2P', 'WebSockets', 'AWS Lambda'],
+      cs: {
+        ctx: 'Real-time distributed messaging and chat system developed for Networks, Signals and Systems Lab (UAH) in a team with Chelsea Fernández Hernández. The project spans from low-level network communication with non-blocking sockets (client-server and hybrid P2P in pure Python) to its modern web and cloud architecture with WebSockets, relational persistence on Amazon RDS, and serverless microservices on AWS Lambda.',
+        sections: [
+          {
+            h: 'Low-Level Architecture: Non-Blocking TCP/UDP Sockets & P2P',
+            p: 'Direct implementation on Python\'s POSIX sockets API using I/O multiplexing via select.select(), managing dozens of concurrent connections in a single thread without blocking or multithreading overhead:',
+            ul: [
+              'Centralized TCP Client-Server model: server with SO_REUSEADDR and select() managing incoming connections, authentication, dynamic rooms (creation, join, auto-cleanup when empty), private messages (user:message), global broadcast (ALL:message), and file transfers.',
+              'Hybrid P2P Model: lightweight TCP server acting as a directory for participant discovery (IP and UDP port), enabling direct peer-to-peer communication via UDP datagrams to eliminate central server bottlenecks.',
+              'Client with triple select() multiplexing: simultaneous listening to keyboard input (sys.stdin), central server notifications (TCP), and peer chat packets (UDP).',
+              'Terminal UX: visual bubble-style formatted chat UI with distinct alignments (sent on left, received on right, system alerts centered) and robust handling of sudden disconnections.'
+            ]
+          },
+          {
+            h: 'Web & Cloud Evolution: WebSockets, Amazon RDS & Serverless on AWS',
+            p: 'Extending the service into a modern web and event-driven cloud architecture:',
+            ul: [
+              'Real-time web app: interactive interface built with Flask and Flask-SocketIO (bidirectional WebSockets handling connect, disconnect, and dynamic rooms join_room / leave_room).',
+              'Persistence & analytics: integration with MySQL/MariaDB on AWS RDS for user records, structured message storage, timestamps, payload size, and telemetry for an analytics dashboard.',
+              'Serverless billing microservice: AWS Lambda function written in Python with Boto3 and PyMySQL to automatically calculate data transfer costs per event or batch based on payload size (cost per processed KB).'
+            ]
+          }
+        ],
+        learn: 'Deep understanding of transport protocols (TCP and UDP) and low-level I/O multiplexing with select() to architect high-performance single-threaded network systems, complemented by modern WebSockets and event-driven cloud computing with AWS Lambda.',
+        note: 'Repository temporarily private: will be uploaded to GitHub soon (currently cleaning and ordering branches). Delighted to explain the architecture and code in an interview.'
+      }
+    }
+  },
+  {
+    t: 'Bonus level', col: '#CDB8F5', c2: '#7a5fd1', c3: '#E6DAFB', tx: '#241547', bg: '#ece3fb', logo: 'data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2048%2048%27%20fill=%27none%27%20stroke=%27%234b2f9a%27%20stroke-width=%273.2%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M13%2014h22a8%208%200%200%201%208%208v6a6%206%200%200%201-10.5%204L30%2029H18l-2.5%203A6%206%200%200%201%205%2028v-6a8%208%200%200%201%208-8z%27/%3E%3Cpath%20d=%27M15%2020v6M12%2023h6%27/%3E%3Ccircle%20cx=%2733%27%20cy=%2721%27%20r=%271.4%27%20fill=%27%234b2f9a%27/%3E%3Ccircle%20cx=%2737%27%20cy=%2725%27%20r=%271.4%27%20fill=%27%234b2f9a%27/%3E%3C/svg%3E', bonus: 1, repo: '#sobre-mi',
+    es: {
+      c: 'Sobre mí · Desbloqueado',
+      d: 'Esta consola nació de recordar las tardes jugando a la Nintendo DS con mi hermano. Fuera del teclado me encontrarás en eventos como CNSM o Technovation Girls, dibujando, haciendo deporte, jugando videojuegos o escuchando música.',
+      tg: ['Nintendo DS', 'Congreso CNSM', 'Technovation', 'Deporte & Arte']
+    },
+    en: {
+      c: 'About me · Unlocked',
+      d: 'This console was born from memories of afternoons playing Nintendo DS with my brother. Away from the keyboard, you\'ll find me at events like CNSM or Technovation Girls, drawing, playing sports, video games, or listening to music.',
+      tg: ['Nintendo DS', 'CNSM Conference', 'Technovation', 'Sports & Art']
+    }
+  }
+];
+
+const getProj = (i, lang = currentLang) => {
+  const p = P[i];
+  if (!p) return null;
+  const l = p[lang] || p.es || {};
+  return { ...p, ...l };
+};
+
 const RM = matchMedia('(prefers-reduced-motion:reduce)').matches;
 /* título hero */
 $('h1').innerHTML = ['Marcos', 'Santos'].map((w, i) => '<span class="w">' + [...w].map((l, j) => `<span class="l" style="animation-delay:${(i * 6 + j) * 50}ms">${l}</span>`).join('') + '</span>').join('');
@@ -89,9 +476,43 @@ $('h1').innerHTML = ['Marcos', 'Santos'].map((w, i) => '<span class="w">' + [...
 const FL = [['c', 6, 14, 46, '#FFD35C', .9], ['s', 46, 6, 54, '#F7917A', -1.1], ['r', 2, 70, 60, '#A8D5C8', .7], ['t', 50, 82, 38, '#CDB8F5', -.8], ['s', 92, 52, 34, '#8EC5E8', 1.2], ['c', 38, 88, 22, '#FFB066', -.6], ['r', 72, 4, 34, '#F7917A', 1]];
 $('#stk').insertAdjacentHTML('afterbegin', FL.map(f => `<i class="fl ${f[0]}" data-d="${f[5]}" style="left:${f[1]}%;top:${f[2]}%;--sz:${f[3]}px;background:${f[4]};color:${f[4]}"></i>`).join(''));
 const fls = $$('.fl');
+
 /* skills */
-const SK = [['Redes & Ciberseguridad', 'Protocolos, VoIP y análisis de tráfico.', ['TCP/IP', 'Wireshark', 'Asterisk 22', 'PJSIP', 'Sockets', 'UFW / Firewall'], '#8EC5E8', '((•))'], ['Backend & APIs', 'APIs asíncronas, autenticación y tests.', ['Python', 'FastAPI', 'Flask', 'SQLAlchemy', 'pytest', 'JWT', 'C# / .NET (en curso)'], '#F7917A', '</>'], ['DevOps, Linux & Cloud', 'Contenedores y proxies para despliegues reproducibles.', ['Docker', 'Linux', 'Bash', 'Nginx', 'Git', 'Google Cloud (en curso)'], '#A8D5C8', '>_'], ['Datos & IA', 'Caché en memoria, SQL y modelos de visión.', ['Redis', 'PostgreSQL', 'MariaDB', 'SQL', 'YOLO'], '#FFD35C', '{ }'], ['Sistemas & hardware', 'Del código al metal, visto en la carrera.', ['C/C++', 'Ensamblador', 'VHDL'], '#CDB8F5', '0x1']];
-$('#sk').innerHTML = SK.map(s => `<div class="card rv" style="--bg:${s[3]}"><i>${s[4]}</i><h3>${s[0]}</h3><p>${s[1]}</p><div class="row">${s[2].map(t => `<span class="tag">${t}</span>`).join('')}</div></div>`).join('');
+const SK = {
+  es: [
+    ['Redes & Ciberseguridad', 'Protocolos, VoIP y análisis de tráfico.', ['TCP/IP', 'Wireshark', 'Asterisk 22', 'PJSIP', 'Sockets', 'UFW / Firewall'], '#8EC5E8', '((•))'],
+    ['Backend & APIs', 'APIs asíncronas, autenticación y tests.', ['Python', 'FastAPI', 'Flask', 'SQLAlchemy', 'pytest', 'JWT', 'C# / .NET (en curso)'], '#F7917A', '</>'],
+    ['DevOps, Linux & Cloud', 'Contenedores y proxies para despliegues reproducibles.', ['Docker', 'Linux', 'Bash', 'Nginx', 'Git', 'Google Cloud (en curso)'], '#A8D5C8', '>_'],
+    ['Datos & IA', 'Caché en memoria, SQL y modelos de visión.', ['Redis', 'PostgreSQL', 'MariaDB', 'SQL', 'YOLO'], '#FFD35C', '{ }'],
+    ['Sistemas & hardware', 'Del código al metal, visto en la carrera.', ['C/C++', 'Ensamblador', 'VHDL'], '#CDB8F5', '0x1']
+  ],
+  en: [
+    ['Networking & Cybersecurity', 'Protocols, VoIP, and traffic analysis.', ['TCP/IP', 'Wireshark', 'Asterisk 22', 'PJSIP', 'Sockets', 'UFW / Firewall'], '#8EC5E8', '((•))'],
+    ['Backend & APIs', 'Asynchronous APIs, authentication, and testing.', ['Python', 'FastAPI', 'Flask', 'SQLAlchemy', 'pytest', 'JWT', 'C# / .NET (in progress)'], '#F7917A', '</>'],
+    ['DevOps, Linux & Cloud', 'Containers and proxies for reproducible deployments.', ['Docker', 'Linux', 'Bash', 'Nginx', 'Git', 'Google Cloud (in progress)'], '#A8D5C8', '>_'],
+    ['Data & AI', 'In-memory caching, SQL databases, and vision models.', ['Redis', 'PostgreSQL', 'MariaDB', 'SQL', 'YOLO'], '#FFD35C', '{ }'],
+    ['Systems & Hardware', 'From low-level code to hardware, covered in university.', ['C/C++', 'Assembly', 'VHDL'], '#CDB8F5', '0x1']
+  ]
+};
+
+function renderSkills() {
+  const sk = SK[currentLang] || SK.es;
+  $('#sk').innerHTML = sk.map(s => `<div class="card rv" style="--bg:${s[3]}"><i>${s[4]}</i><h3>${s[0]}</h3><p>${s[1]}</p><div class="row">${s[2].map(t => `<span class="tag">${t}</span>`).join('')}</div></div>`).join('');
+  $$('.card').forEach(c => {
+    c.onpointermove = e => {
+      if (e.pointerType === 'touch') return;
+      const r = c.getBoundingClientRect();
+      c.style.setProperty('--ry', ((e.clientX - r.left) / r.width - .5) * 14 + 'deg');
+      c.style.setProperty('--rx', -((e.clientY - r.top) / r.height - .5) * 14 + 'deg');
+    };
+    c.onpointerleave = () => {
+      c.style.setProperty('--rx', '0deg');
+      c.style.setProperty('--ry', '0deg');
+    };
+  });
+}
+renderSkills();
+
 const MQ = ['FastAPI', 'Redis', 'Docker', 'Asterisk', 'Flask', 'MariaDB', 'Nginx', 'TCP', 'Linux', 'YOLO'];
 $('#mqs').innerHTML = Array(3).fill(MQ.map(t => t + '<i>✦</i>').join('')).join('');
 /* ---- sonido (Web Audio, sintetizado) ---- */
@@ -142,7 +563,13 @@ document.addEventListener('pointerdown', e => {
     audio.click();
   }
 });
-const snd = $('#snd'), sndLab = () => { snd.textContent = 'Sonido: ' + (audio.on ? 'sí' : 'no'); snd.setAttribute('aria-pressed', audio.on) }; sndLab();
+const snd = $('#snd'), sndLab = () => {
+  if (!snd) return;
+  const i18n = I18N[currentLang].nav;
+  snd.textContent = audio.on ? i18n.soundOn : i18n.soundOff;
+  snd.setAttribute('aria-pressed', audio.on);
+};
+sndLab();
 snd.onclick = () => {
   audio.unlocked = true;
   audio.on = !audio.on;
@@ -164,14 +591,18 @@ async function setCart(i) {
   if (prev > -1) { audio.eject(); cart.classList.remove('in'); $('#sp').classList.remove('on'); stage.classList.remove('loaded', 'boot'); $('#boot').classList.remove('off'); $('#proj').classList.remove('on'); $('#led').classList.remove('on'); await sleep(420); if (my !== tok) return }
   stage.classList.toggle('empty', i < 0);
   if (i < 0) return;
-  const p = P[i], n = String(i + 1).padStart(2, '0');
-  cart.style.setProperty('--c', p.col); cart.style.setProperty('--c2', p.c2 || p.col); cart.style.setProperty('--c3', p.c3 || p.col); cart.style.setProperty('--tx', p.tx || '#14121f'); $('#ct').textContent = p.ct || (p.bonus ? 'BONUS' : p.t.split(' ').slice(0, 2).join(' ')); $('#cc').textContent = 'AGB-' + n + ' · ' + (p.cc || p.c.split(' · ')[0]).toUpperCase();
+  const p = getProj(i), n = String(i + 1).padStart(2, '0');
+  const i18n = I18N[currentLang];
+  cart.style.setProperty('--c', p.col); cart.style.setProperty('--c2', p.c2 || p.col); cart.style.setProperty('--c3', p.c3 || p.col); cart.style.setProperty('--tx', p.tx || '#14121f');
+  $('#ct').textContent = p.ct || (p.bonus ? 'BONUS' : p.t.split(' ').slice(0, 2).join(' '));
+  $('#cc').textContent = 'AGB-' + n + ' · ' + (p.cc || p.c.split(' · ')[0]).toUpperCase();
+  const ejEl = $('.ej'); if (ejEl) ejEl.textContent = i18n.console.eject;
   $('#clab').classList.toggle('has-logo', true); $('#csub').hidden = !p.csub; if (p.csub) $('#csub').textContent = p.csub;
   const cl = $('#clogo'), ci = $('#cimg'), cw = $('#cwm'); cl.hidden = !p.logo; cw.hidden = !p.logo; cl.classList.toggle('round', !!p.logoRound); cw.classList.toggle('round', !!p.logoRound); if (p.logo) { ci.src = p.logo; cw.src = p.logo } else { ci.removeAttribute('src'); cw.removeAttribute('src') }
   $('#pc').textContent = (p.bonus ? 'BONUS' : n + ' / 0' + P.filter(x => !x.bonus).length) + ' · ' + p.c; scramble($('#pt'), p.t);
   const pd = $('#pd'); pd.textContent = p.d;
   if (p.coop) {
-    pd.append(' Realizado en equipo junto a ');
+    pd.append(i18n.console.teamWith);
     const a = document.createElement('a');
     a.href = p.coop.url; a.target = '_blank'; a.rel = 'noopener';
     a.textContent = p.coop.name;
@@ -179,10 +610,21 @@ async function setCart(i) {
     pd.append(a, '.');
   }
   const pg = $('#pg'), pcase = $('#pcase'); pcase.hidden = !p.priv; pg.hidden = !!p.priv;
-  if (!p.priv) { pg.href = p.repo; if (p.bonus) { pg.textContent = 'Ir a Sobre mí'; pg.removeAttribute('target') } else { pg.textContent = 'Ver código en GitHub'; pg.target = '_blank' } }
+  pcase.textContent = i18n.console.readCase;
+  if (!p.priv) {
+    pg.href = p.repo;
+    if (p.bonus) {
+      pg.textContent = i18n.console.goToAbout;
+      pg.removeAttribute('target');
+    } else {
+      pg.textContent = i18n.console.viewCode;
+      pg.target = '_blank';
+    }
+  }
   $('#ptags').innerHTML = p.tg.map(t => `<span class="tag" style="background:${p.col}">${t}</span>`).join('');
   $('#sc').textContent = p.c.split(' · ')[0].toUpperCase(); $('#st').textContent = p.t; $('#sd').innerHTML = p.tg.map(t => `<span>${t}</span>`).join('');
-  $('#su').textContent = p.priv ? '▶ A · CASO DE ESTUDIO' : p.bonus ? '▶ A · SOBRE MÍ' : '▶ A · VER CÓDIGO'; $('#scr').style.background = `linear-gradient(#fff,${p.col}cc)`;
+  $('#su').textContent = p.priv ? (p.bonus ? i18n.console.promptAbout : i18n.console.promptCase) : i18n.console.promptCode;
+  $('#scr').style.background = `linear-gradient(#fff,${p.col}cc)`;
   cart.classList.add('in'); stage.classList.add('loaded'); $('#proj').classList.add('on');
   await sleep(520); if (my !== tok) return;
   $('#body').classList.remove('bump'); void $('#body').offsetWidth; $('#body').classList.add('bump'); $('#led').classList.add('on'); stage.classList.add('boot'); audio.insert(); audio.boot();
@@ -212,13 +654,14 @@ function topCur(on) {
   else if (hasFinePointer) enableCustomCur();
 }
 function openCase(idx = cur) {
-  const p = P[idx]; if (!p || !p.cs) return; const c = p.cs, ok = s => s && !s.startsWith('[TODO]'), d = $('#dlg');
+  const p = getProj(idx); if (!p || !p.cs) return; const c = p.cs, ok = s => s && !s.startsWith('[TODO]'), d = $('#dlg');
   $('#dt').textContent = p.t;
   const body = c.sections
     ? c.sections.map(s => `<h4>${s.h}</h4>` + (s.p ? `<p>${s.p}</p>` : '') + (s.ul && s.ul.length ? `<ul>${s.ul.map(x => `<li>${x}</li>`).join('')}</ul>` : '')).join('')
-    : `<h4>Decisiones técnicas</h4><ul>${c.dec.map(x => `<li>${x}</li>`).join('')}</ul>`;
-  const noteTxt = c.note || 'Descripción a alto nivel: el código y los diagramas no son públicos por confidencialidad. Encantado de explicar el enfoque en una entrevista.';
-  $('#db').innerHTML = `<p>${c.ctx}</p>` + body + (ok(c.fig) ? `<div class="fig">${c.fig}</div>` : '') + (ok(c.learn) ? `<h4>Qué aprendí</h4><p>${c.learn}</p>` : '') + `<p style="margin-top:14px;font-size:12px">${noteTxt}</p>`;
+    : `<h4>${currentLang === 'es' ? 'Decisiones técnicas' : 'Technical Decisions'}</h4><ul>${c.dec.map(x => `<li>${x}</li>`).join('')}</ul>`;
+  const noteTxt = c.note || (currentLang === 'es' ? 'Descripción a alto nivel: el código y los diagramas no son públicos por confidencialidad. Encantado de explicar el enfoque en una entrevista.' : 'High-level description: code and architectural diagrams are private for confidentiality. Delighted to explain the approach in an interview.');
+  const learnHead = currentLang === 'es' ? 'Qué aprendí' : 'What I Learned';
+  $('#db').innerHTML = (c.ctx ? `<p>${c.ctx}</p>` : '') + body + (ok(c.fig) ? `<div class="fig">${c.fig}</div>` : '') + (ok(c.learn) ? `<h4>${learnHead}</h4><p>${c.learn}</p>` : '') + `<p style="margin-top:14px;font-size:12px">${noteTxt}</p>`;
   if (!d.open) d.showModal();
   const sc = $('#dlgCnt') || d;
   sc.scrollTop = 0;
@@ -382,13 +825,28 @@ document.addEventListener('pointerout', e => {
 });
 /* ---- contacto directo ---- */
 const EM = ['marcos.santos.aragon', 'gmail.com'].join('@'), TEL = ['+34', '684', '04', '52', '29'];
-const cpText = (t, b, o) => { if (!navigator.clipboard) return false; navigator.clipboard.writeText(t).then(() => { b.textContent = '¡Copiado!'; setTimeout(() => b.textContent = o, 2200) }); return true };
-const gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(EM) + '&su=' + encodeURIComponent('[Portfolio] Contacto · Oportunidad profesional');
-$('#emtxt').textContent = EM; $('#emtxt').href = gmailUrl; $('#emtxt').target = '_blank'; $('#emtxt').rel = 'noopener';
-$('#emgo').href = gmailUrl; $('#emgo').target = '_blank'; $('#emgo').rel = 'noopener';
-$('#em').onclick = function () { cpText(EM, this, 'Copiar') };
+const cpText = (t, b) => {
+  if (!navigator.clipboard) return false;
+  const copied = I18N[currentLang].contact.copied;
+  navigator.clipboard.writeText(t).then(() => {
+    b.textContent = copied;
+    setTimeout(() => { b.textContent = I18N[currentLang].contact.copy; }, 2200);
+  });
+  return true;
+};
+const updateContactLinks = () => {
+  const su = currentLang === 'es'
+    ? '[Portfolio] Contacto · Oportunidad profesional'
+    : '[Portfolio] Contact · Professional Opportunity';
+  const gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(EM) + '&su=' + encodeURIComponent(su);
+  const emtxt = $('#emtxt'), emgo = $('#emgo');
+  if (emtxt) { emtxt.textContent = EM; emtxt.href = gmailUrl; emtxt.target = '_blank'; emtxt.rel = 'noopener'; }
+  if (emgo) { emgo.href = gmailUrl; emgo.target = '_blank'; emgo.rel = 'noopener'; }
+};
+updateContactLinks();
+$('#em').onclick = function () { cpText(EM, this) };
 $('#ph').onclick = function () { const num = TEL.join(' '), raw = TEL.join(''); $('#phtxt').textContent = num; $('#phtxt').href = 'tel:' + raw; $('#phgo').href = 'tel:' + raw; $('#phgo').hidden = false; $('#phcp').hidden = false; this.hidden = true };
-$('#phcp').onclick = function () { cpText(TEL.join(' '), this, 'Copiar') };
+$('#phcp').onclick = function () { cpText(TEL.join(' '), this) };
 $$('.card').forEach(c => { c.onpointermove = e => { if (e.pointerType === 'touch') return; const r = c.getBoundingClientRect(); c.style.setProperty('--ry', ((e.clientX - r.left) / r.width - .5) * 14 + 'deg'); c.style.setProperty('--rx', -((e.clientY - r.top) / r.height - .5) * 14 + 'deg') }; c.onpointerleave = () => { c.style.setProperty('--rx', '0deg'); c.style.setProperty('--ry', '0deg') } });
 /* ---- ondas retro + bucle ---- */
 const rib = $('#rib'), RC = ['#A8D5C8', '#F7917A', '#FFB066', '#FFD35C', '#F7917A', '#2A9DA6'], WD = [1, .82, .64, .46, .3, .15];
@@ -627,3 +1085,105 @@ $$('.rv').forEach((el, i) => { el.dataset.d = (i % 4) * 90; io.observe(el) });
   goTo(0);
   startSlideshow();
 })();
+
+/* ---- internacionalización (i18n: ES / EN) ---- */
+function applyLanguage(lang) {
+  if (lang !== 'es' && lang !== 'en') return;
+  currentLang = lang;
+  try { localStorage.setItem('lang', lang); } catch (e) {}
+  document.documentElement.lang = lang;
+  const i18n = I18N[lang];
+
+  // Metas y título
+  if (i18n.meta) {
+    document.title = i18n.meta.title;
+    const md = $('meta[name="description"]'); if (md) md.content = i18n.meta.desc;
+    const ogt = $('meta[property="og:title"]'); if (ogt) ogt.content = i18n.meta.ogTitle;
+    const ogd = $('meta[property="og:description"]'); if (ogd) ogd.content = i18n.meta.ogDesc;
+  }
+
+  // Botón selector de idioma
+  const lEs = $('#langEs'), lEn = $('#langEn'), lBtn = $('#langBtn');
+  if (lEs) lEs.classList.toggle('act', lang === 'es');
+  if (lEn) lEn.classList.toggle('act', lang === 'en');
+  if (lBtn) lBtn.setAttribute('aria-label', i18n.nav.langAria);
+
+  // Sonido
+  sndLab();
+
+  // Elementos estáticos data-i18n
+  $$('[data-i18n]').forEach(el => {
+    const path = el.dataset.i18n.split('.');
+    let val = i18n;
+    for (const k of path) val = val ? val[k] : null;
+    if (val !== null && val !== undefined) {
+      el.innerHTML = val;
+    }
+  });
+
+  // Atributos aria data-i18n-aria
+  $$('[data-i18n-aria]').forEach(el => {
+    const path = el.dataset.i18nAria.split('.');
+    let val = i18n;
+    for (const k of path) val = val ? val[k] : null;
+    if (val) el.setAttribute('aria-label', val);
+  });
+
+  // Lista para lectores de pantalla
+  const sr = $('#srList');
+  if (sr && i18n.hero && i18n.hero.srItems) {
+    sr.innerHTML = i18n.hero.srItems.map(item => `<li>${item}</li>`).join('');
+  }
+
+  // Botón de expulsión de cartucho
+  const ej = $('.ej');
+  if (ej) ej.textContent = i18n.console.eject;
+
+  // Actualizar enlaces de contacto
+  if (typeof updateContactLinks === 'function') updateContactLinks();
+
+  // Renderizar skills
+  if (typeof renderSkills === 'function') renderSkills();
+
+  // Actualizar cartucho activo si hay uno insertado
+  if (cur >= 0) {
+    const p = getProj(cur), n = String(cur + 1).padStart(2, '0');
+    $('#pc').textContent = (p.bonus ? 'BONUS' : n + ' / 0' + P.filter(x => !x.bonus).length) + ' · ' + p.c;
+    $('#ct').textContent = p.ct || (p.bonus ? 'BONUS' : p.t.split(' ').slice(0, 2).join(' '));
+    $('#cc').textContent = 'AGB-' + n + ' · ' + (p.cc || p.c.split(' · ')[0]).toUpperCase();
+    $('#pt').textContent = p.t;
+    const pd = $('#pd');
+    pd.textContent = p.d;
+    if (p.coop) {
+      pd.append(i18n.console.teamWith);
+      const a = document.createElement('a');
+      a.href = p.coop.url; a.target = '_blank'; a.rel = 'noopener';
+      a.textContent = p.coop.name;
+      a.style.cssText = 'font-weight:700;text-decoration:underline;text-underline-offset:3px';
+      pd.append(a, '.');
+    }
+    $('#ptags').innerHTML = p.tg.map(t => `<span class="tag" style="background:${p.col}">${t}</span>`).join('');
+    $('#sc').textContent = p.c.split(' · ')[0].toUpperCase();
+    $('#st').textContent = p.t;
+    $('#sd').innerHTML = p.tg.map(t => `<span>${t}</span>`).join('');
+    $('#su').textContent = p.priv ? (p.bonus ? i18n.console.promptAbout : i18n.console.promptCase) : i18n.console.promptCode;
+    const pg = $('#pg'), pcase = $('#pcase');
+    pcase.textContent = i18n.console.readCase;
+    if (!p.priv) {
+      pg.textContent = p.bonus ? i18n.console.goToAbout : i18n.console.viewCode;
+    }
+    const dlg = $('#dlg');
+    if (dlg && dlg.open) openCase(cur);
+  }
+}
+
+const langBtn = $('#langBtn');
+if (langBtn) {
+  langBtn.addEventListener('click', () => {
+    const nextLang = currentLang === 'es' ? 'en' : 'es';
+    applyLanguage(nextLang);
+  });
+}
+
+// Inicializar idioma almacenado o por defecto
+applyLanguage(currentLang);
