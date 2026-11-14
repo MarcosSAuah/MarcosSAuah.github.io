@@ -53,51 +53,48 @@
       touch-action: manipulation
     }
 
-    .cc body,
-    .cc button,
-    .cc .btn,
-    .cc a,
-    .cc #cart {
-      cursor: none
+    button,
+    .btn,
+    .cbtn,
+    a,
+    .k,
+    #cart,
+    .dots button,
+    .clink,
+    .pdot,
+    .pol,
+    .pol-slide,
+    #pcase,
+    #snd,
+    #mn,
+    .card,
+    .hob div,
+    summary,
+    [role="button"] {
+      cursor: pointer !important;
     }
 
-    #cur,
+    #cur {
+      display: none !important;
+    }
+
     #ring {
-      display: none
+      display: none;
     }
 
-    .cc #cur,
     .cc #ring {
-      display: block
+      display: block;
     }
 
     @media(hover:none), (pointer:coarse) {
-
-      .cc body,
-      .cc button,
-      .cc .btn,
-      .cc a,
-      .cc #cart {
-        cursor: auto
-      }
-
-      .cc #cur,
-      .cc #ring {
-        display: none !important
+      .cc #ring,
+      #ring {
+        display: none !important;
       }
     }
 
-    .cc.mo body,
-    .cc.mo button,
-    .cc.mo .btn,
-    .cc.mo a,
-    .cc.mo #cart {
-      cursor: auto
-    }
-
-    .cc.mo #cur,
     .cc.mo #ring {
-      display: none !important
+      display: none !important;
     }
 
     [hidden] {
@@ -169,7 +166,6 @@
       transform: scaleX(0)
     }
 
-    #cur,
     #ring {
       position: fixed;
       top: 0;
@@ -180,31 +176,21 @@
       pointer-events: none;
       border-radius: 50%;
       padding: 0;
-      overflow: visible
-    }
-
-    #cur {
-      width: 10px;
-      height: 10px;
-      border: 0;
-      background: var(--ink);
-      margin: -5px 0 0 -5px
-    }
-
-    #ring {
+      overflow: visible;
       width: 38px;
       height: 38px;
       margin: -19px 0 0 -19px;
       border: 2px solid var(--ink);
       background: transparent;
-      transition: width .25s, height .25s, margin .25s, background .25s
+      transition: width .25s, height .25s, margin .25s, background .25s, border-color .25s;
     }
 
     #ring.h {
-      width: 70px;
-      height: 70px;
-      margin: -35px 0 0 -35px;
-      background: rgba(255, 176, 102, .45)
+      width: 56px;
+      height: 56px;
+      margin: -28px 0 0 -28px;
+      border-color: var(--orange);
+      background: rgba(255, 176, 102, .45);
     }
 
     .sp {
@@ -2191,15 +2177,14 @@
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
       gap: clamp(24px, 4vw, 44px);
-      align-items: stretch;
+      align-items: start;
       text-align: left
     }
 
     .cinfo {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: 16px
+      gap: 20px
     }
 
     .cinfo .lead {
@@ -2276,11 +2261,12 @@
     }
 
     .cstatus {
-      padding: clamp(16px, 2.2vw, 24px);
+      padding: clamp(14px, 1.6vw, 18px) clamp(16px, 2vw, 22px);
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: 12px;
+      justify-content: flex-start;
+      align-self: start;
+      gap: 10px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, .04);
       position: relative
     }
@@ -2321,7 +2307,7 @@
     }
 
     .cstatus h3 {
-      font-size: clamp(21px, 2.3vw, 26px);
+      font-size: clamp(19px, 2vw, 23px);
       margin: 0;
       letter-spacing: -.02em
     }
@@ -2329,8 +2315,8 @@
     .cstatus-specs {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin: 2px 0
+      gap: 8px;
+      margin: 2px 0 0
     }
 
     @media(max-width: 520px) {
@@ -2343,34 +2329,21 @@
       background: rgba(255, 255, 255, .7);
       border: 1.5px solid var(--ink);
       border-radius: 12px;
-      padding: 10px 12px;
+      padding: 8px 10px;
       display: flex;
       flex-direction: column;
-      gap: 3px
+      gap: 2px
     }
 
     .cspec small {
-      font: 700 9.5px Silkscreen;
+      font: 700 9px Silkscreen;
       letter-spacing: .04em;
       opacity: .7
     }
 
     .cspec strong {
-      font: 700 13px/1.3 'DM Sans', sans-serif;
+      font: 700 12.5px/1.25 'DM Sans', sans-serif;
       color: var(--ink)
-    }
-
-    .cstatus-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 4px
-    }
-
-    .cstatus-actions .btn {
-      flex: 1 1 180px;
-      text-align: center;
-      justify-content: center
     }
 
     .crow {

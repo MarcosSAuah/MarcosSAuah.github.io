@@ -96,20 +96,60 @@ const MQ = ['FastAPI', 'Redis', 'Docker', 'Asterisk', 'Flask', 'MariaDB', 'Nginx
 $('#mqs').innerHTML = Array(3).fill(MQ.map(t => t + '<i>✦</i>').join('')).join('');
 /* ---- sonido (Web Audio, sintetizado) ---- */
 const audio = {
-  ctx: null, on: (() => { try { return localStorage.getItem('snd') !== 'off' } catch (e) { return true } })(),
-  init() { if (!this.ctx) { const C = window.AudioContext || window.webkitAudioContext; if (C) this.ctx = new C() } if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume().catch(() => { }) },
-  tone(type, f0, f1, at, dur, vol) { const c = this.ctx, t = c.currentTime + at, o = c.createOscillator(), g = c.createGain(); o.type = type; o.frequency.setValueAtTime(f0, t); if (f1 !== f0) o.frequency.exponentialRampToValueAtTime(f1, t + dur); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.001, t + dur); o.connect(g); g.connect(c.destination); o.start(t); o.stop(t + dur + .02) },
-  play(fn) { if (!this.on) return; this.init(); if (this.ctx && this.ctx.state === 'running') fn() },
+  ctx: null,
+  unlocked: false,
+  on: (() => { try { return localStorage.getItem('snd') !== 'off' } catch (e) { return true } })(),
+  init() {
+    if (!this.unlocked) return;
+    if (!this.ctx) { const C = window.AudioContext || window.webkitAudioContext; if (C) this.ctx = new C() }
+    if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume().catch(() => { });
+  },
+  tone(type, f0, f1, at, dur, vol) {
+    if (!this.ctx || this.ctx.state !== 'running') return;
+    try {
+      const c = this.ctx, t = c.currentTime + at, o = c.createOscillator(), g = c.createGain();
+      o.type = type;
+      o.frequency.setValueAtTime(f0, t);
+      if (f1 !== f0) o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+      g.gain.setValueAtTime(vol, t);
+      g.gain.exponentialRampToValueAtTime(.001, t + dur);
+      o.connect(g);
+      g.connect(c.destination);
+      o.start(t);
+      o.stop(t + dur + .02);
+    } catch (e) { }
+  },
+  play(fn) {
+    if (!this.on || !this.unlocked) return;
+    this.init();
+    if (this.ctx && this.ctx.state === 'running') fn();
+  },
   insert() { this.play(() => this.tone('triangle', 160, 50, 0, .08, .3)) },
   eject() { this.play(() => this.tone('sine', 260, 540, 0, .1, .25)) },
   click() { this.play(() => this.tone('triangle', 320, 120, 0, .04, .15)) },
   boot() { this.play(() => [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => this.tone('sine', f, f, i * .07, .45, .18))) },
   scan() { this.play(() => this.tone('sawtooth', 340, 780, 0, .08, .09)) }
 };
-['pointerdown', 'keydown', 'touchend'].forEach(ev => addEventListener(ev, () => { if (audio.on) audio.init() }, { passive: true }));
-document.addEventListener('pointerdown', e => { if (e.target.closest('.k,.btn,.cbtn,nav a,nav button,.dots button')) audio.click() });
+const unlockAudio = () => {
+  audio.unlocked = true;
+  if (audio.on) audio.init();
+  ['pointerdown', 'keydown', 'touchend', 'click'].forEach(ev => removeEventListener(ev, unlockAudio));
+};
+['pointerdown', 'keydown', 'touchend', 'click'].forEach(ev => addEventListener(ev, unlockAudio, { passive: true }));
+document.addEventListener('pointerdown', e => {
+  if (e.target.closest('.k,.btn,.cbtn,nav a,nav button,.dots button')) {
+    if (!audio.unlocked) { audio.unlocked = true; audio.init(); }
+    audio.click();
+  }
+});
 const snd = $('#snd'), sndLab = () => { snd.textContent = 'Sonido: ' + (audio.on ? 'sí' : 'no'); snd.setAttribute('aria-pressed', audio.on) }; sndLab();
-snd.onclick = () => { audio.on = !audio.on; try { localStorage.setItem('snd', audio.on ? 'on' : 'off') } catch (e) { } sndLab() };
+snd.onclick = () => {
+  audio.unlocked = true;
+  audio.on = !audio.on;
+  try { localStorage.setItem('snd', audio.on ? 'on' : 'off') } catch (e) { }
+  if (audio.on) audio.init();
+  sndLab();
+};
 /* ---- consola ---- */
 let cur = -2, tok = 0; const dots = $('#dots'), stage = $('#stage'), cart = $('#cart'), consola = $('#consola');
 dots.innerHTML = P.map((p, i) => `<button aria-label="${p.t}" data-i="${i}" style="--c:${p.col}"></button>`).join('');
@@ -284,7 +324,16 @@ addEventListener('pointermove', e => {
   const dx = (Math.random() - .5) * 40, dy = 10 + Math.random() * 30;
   s.animate([{ transform: 'translate(-50%,-50%) scale(1) rotate(0)', opacity: 1 }, { transform: `translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) scale(0) rotate(200deg)`, opacity: 0 }], { duration: 750, easing: 'ease-out' }).onfinish = () => s.remove()
 });
-document.addEventListener('pointerover', e => { if (e.pointerType !== 'touch') $('#ring').classList.toggle('h', !!e.target.closest('a,button,.k,.card,.pol,.hob div')) });
+const interactiveSel = 'a, button, .btn, .cbtn, .k, #cart, .dots button, .clink, .pdot, .pol, .pol-slide, #pcase, #snd, #mn, .card, .hob div, [role="button"], summary';
+document.addEventListener('pointerover', e => {
+  if (e.pointerType !== 'touch') {
+    const isInter = !!(e.target && e.target.closest && e.target.closest(interactiveSel));
+    $('#ring').classList.toggle('h', isInter);
+  }
+});
+document.addEventListener('pointerout', e => {
+  if (!e.relatedTarget) $('#ring').classList.remove('h');
+});
 /* ---- contacto directo ---- */
 const EM = ['marcos.santos.aragon', 'gmail.com'].join('@'), TEL = ['+34', '684', '04', '52', '29'];
 const cpText = (t, b, o) => { if (!navigator.clipboard) return false; navigator.clipboard.writeText(t).then(() => { b.textContent = '¡Copiado!'; setTimeout(() => b.textContent = o, 2200) }); return true };
@@ -294,10 +343,6 @@ $('#emgo').href = gmailUrl; $('#emgo').target = '_blank'; $('#emgo').rel = 'noop
 $('#em').onclick = function () { cpText(EM, this, 'Copiar') };
 $('#ph').onclick = function () { const num = TEL.join(' '), raw = TEL.join(''); $('#phtxt').textContent = num; $('#phtxt').href = 'tel:' + raw; $('#phgo').href = 'tel:' + raw; $('#phgo').hidden = false; $('#phcp').hidden = false; this.hidden = true };
 $('#phcp').onclick = function () { cpText(TEL.join(' '), this, 'Copiar') };
-
-const btnGm = $('#btnGmailDirect'), btnCp = $('#btnCopyEmail');
-if (btnGm) btnGm.href = gmailUrl;
-if (btnCp) btnCp.onclick = function () { cpText(EM, this, 'Copiar email') };
 $$('.card').forEach(c => { c.onpointermove = e => { if (e.pointerType === 'touch') return; const r = c.getBoundingClientRect(); c.style.setProperty('--ry', ((e.clientX - r.left) / r.width - .5) * 14 + 'deg'); c.style.setProperty('--rx', -((e.clientY - r.top) / r.height - .5) * 14 + 'deg') }; c.onpointerleave = () => { c.style.setProperty('--rx', '0deg'); c.style.setProperty('--ry', '0deg') } });
 /* ---- ondas retro + bucle ---- */
 const rib = $('#rib'), RC = ['#A8D5C8', '#F7917A', '#FFB066', '#FFD35C', '#F7917A', '#2A9DA6'], WD = [1, .82, .64, .46, .3, .15];
