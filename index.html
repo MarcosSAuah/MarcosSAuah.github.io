@@ -21,7 +21,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Sans:wght@400;500;700&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="static/css/style.css?v=2.4">
+  <link rel="stylesheet" href="static/css/style.css?v=2.9">
 </head>
 
 <body>
@@ -35,7 +35,7 @@
     <div id="menu"><a href="#consola" data-go="-1" data-i18n="nav.home">Inicio</a><a href="#consola" data-go="0" data-i18n="nav.projects">Proyectos</a><a
         href="#skills" data-i18n="nav.skills">Skills</a><a href="#trayectoria" data-i18n="nav.journey">Trayectoria</a><a href="#sobre-mi" data-i18n="nav.about">Sobre mí</a><a
         href="#contacto" data-i18n="nav.contact">Contacto</a><button class="snd" id="snd" type="button" aria-pressed="true">Sonido:
-        sí</button><button class="lang-btn" id="langBtn" type="button" aria-label="Cambiar idioma a inglés"><span class="lang-opt act" id="langEs">ES</span><span class="lang-sep">/</span><span class="lang-opt" id="langEn">EN</span></button><a class="cv" href="./cv.pdf" target="_blank" rel="noopener" style="background:var(--yellow)">CV</a>
+        sí</button><button class="lang-switch" id="langBtn" type="button" aria-label="Cambiar idioma a inglés"><span class="lang-tag act" id="langEs">ES</span><span class="lang-swap" aria-hidden="true">⇄</span><span class="lang-tag" id="langEn">EN</span></button><a class="cv" href="./cv.pdf" target="_blank" rel="noopener" style="background:var(--yellow)">CV</a>
     </div>
   </nav>
 
@@ -52,7 +52,7 @@
             <div class="row"><span class="tag" data-i18n="hero.tag1">Prácticas ene/feb 2027</span><span class="tag" data-i18n="hero.tag2">Madrid · mín. 450 y max
                 900 h</span><span class="tag" data-i18n="hero.tag3">Hasta 35 h/sem</span><span class="tag" data-i18n="hero.tag4">Inglés B2</span></div>
             <div class="row"><a class="btn mag" href="./cv.pdf" target="_blank" rel="noopener" data-i18n="hero.btnCv">Descargar CV</a><a
-                class="btn alt mag" href="https://github.com/MarcosSAuah" target="_blank" rel="noopener" data-i18n="hero.btnGh">GitHub</a>
+                class="btn alt btn-gh mag" href="https://github.com/MarcosSAuah" target="_blank" rel="noopener"><svg class="btn-ico" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg><span data-i18n="hero.btnGh">GitHub</span><span class="btn-arrow" aria-hidden="true">↗</span></a>
             </div>
             <p class="hint"><i></i><span data-i18n="hero.hint">Haz scroll para insertar un cartucho (o usa ← →)</span></p>
             <ul class="sr" id="srList">
@@ -156,9 +156,10 @@
 
     <dialog id="dlg" aria-labelledby="dt">
       <div class="dlg-cnt" id="dlgCnt">
+        <button class="dlg-x mag" type="button" id="dxTop" aria-label="Cerrar modal" data-i18n-aria="dlg.close">✕</button>
         <h3 id="dt"></h3>
         <div id="db"></div>
-        <div class="row"><button class="btn alt" type="button" id="dx" data-i18n="dlg.close">Cerrar</button></div>
+        <div class="row"><button class="btn alt btn-close mag" type="button" id="dx"><svg class="btn-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span data-i18n="dlg.close">Cerrar</span><span class="btn-kbd" aria-hidden="true">ESC</span></button></div>
       </div>
     </dialog>
 
@@ -302,16 +303,16 @@
         </div>
       </div>
       <div class="crow rv">
-        <a class="btn alt mag" href="https://www.linkedin.com/in/marcos-santos-aragon" target="_blank"
-          rel="noopener">LinkedIn</a>
-        <a class="btn alt mag" href="https://github.com/MarcosSAuah" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn alt btn-li mag" href="https://www.linkedin.com/in/marcos-santos-aragon" target="_blank"
+          rel="noopener"><svg class="btn-ico" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg><span>LinkedIn</span><span class="btn-arrow" aria-hidden="true">↗</span></a>
+        <a class="btn alt btn-gh mag" href="https://github.com/MarcosSAuah" target="_blank" rel="noopener"><svg class="btn-ico" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg><span>GitHub</span><span class="btn-arrow" aria-hidden="true">↗</span></a>
         <a class="btn mag" href="./cv.pdf" target="_blank" rel="noopener" data-i18n="footer.btnCv">Descargar CV</a>
       </div>
       <p class="fcopy" data-i18n="footer.copy">Marcos Santos Aragón · Madrid, España</p>
     </footer>
   </main>
 
-  <script src="static/js/main.js?v=2.4" defer></script>
+  <script src="static/js/main.js?v=2.9" defer></script>
 </body>
 
 </html>

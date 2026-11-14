@@ -495,10 +495,39 @@ const SK = {
   ]
 };
 
+/* reveal observer */
+let io = null;
+try {
+  io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.transitionDelay = (e.target.dataset.d || 0) + 'ms';
+      e.target.classList.add('in');
+      e.target.addEventListener('transitionend', () => { e.target.style.transitionDelay = '' }, { once: true });
+      if (io) io.unobserve(e.target);
+    }
+  }), { threshold: .15 });
+} catch (e) {
+  io = null;
+}
+
 function renderSkills() {
   const sk = SK[currentLang] || SK.es;
-  $('#sk').innerHTML = sk.map(s => `<div class="card rv" style="--bg:${s[3]}"><i>${s[4]}</i><h3>${s[0]}</h3><p>${s[1]}</p><div class="row">${s[2].map(t => `<span class="tag">${t}</span>`).join('')}</div></div>`).join('');
-  $$('.card').forEach(c => {
+  const skEl = $('#sk');
+  if (!skEl) return;
+  const sSection = $('#skills');
+  const alreadyRevealed = sSection && (sSection.querySelector('.kick')?.classList.contains('in') || sSection.getBoundingClientRect().top < window.innerHeight);
+
+  skEl.innerHTML = sk.map((s, i) => `<div class="card rv${alreadyRevealed ? ' in' : ''}" data-d="${i * 90}" style="--bg:${s[3]}"><i>${s[4]}</i><h3>${s[0]}</h3><p>${s[1]}</p><div class="row">${s[2].map(t => `<span class="tag">${t}</span>`).join('')}</div></div>`).join('');
+
+  $$('#sk .card').forEach((c, i) => {
+    c.dataset.d = i * 90;
+    if (alreadyRevealed) {
+      c.classList.add('in');
+    } else if (io) {
+      io.observe(c);
+    } else {
+      c.classList.add('in');
+    }
     c.onpointermove = e => {
       if (e.pointerType === 'touch') return;
       const r = c.getBoundingClientRect();
@@ -632,11 +661,12 @@ async function setCart(i) {
 }
 /* ---- cursor personalizado con fallback automático nativo ---- */
 const CUR = $('#cur'), RING = $('#ring');
-let hasFinePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
+let hasFinePointer = matchMedia('(hover: hover) and (pointer: fine)').matches
+  || matchMedia('(hover: hover), (any-hover: hover)').matches;
 let customCurActive = false;
 
 function enableCustomCur() {
-  if (customCurActive || !hasFinePointer || !CUR || !RING) return;
+  if (customCurActive || !CUR || !RING) return;
   customCurActive = true;
   document.documentElement.classList.add('custom-cur');
 }
@@ -649,9 +679,15 @@ function disableCustomCur() {
   if (RING) RING.classList.remove('h');
 }
 
-function topCur(on) {
-  if (on) disableCustomCur();
-  else if (hasFinePointer) enableCustomCur();
+function syncCursorTopLayer(modalEl) {
+  if (!CUR || !RING) return;
+  if (modalEl && modalEl.open) {
+    if (RING.parentElement !== modalEl) modalEl.appendChild(RING);
+    if (CUR.parentElement !== modalEl) modalEl.appendChild(CUR);
+  } else {
+    if (RING.parentElement !== document.body) document.body.appendChild(RING);
+    if (CUR.parentElement !== document.body) document.body.appendChild(CUR);
+  }
 }
 function openCase(idx = cur) {
   const p = getProj(idx); if (!p || !p.cs) return; const c = p.cs, ok = s => s && !s.startsWith('[TODO]'), d = $('#dlg');
@@ -663,17 +699,28 @@ function openCase(idx = cur) {
   const learnHead = currentLang === 'es' ? 'Qué aprendí' : 'What I Learned';
   $('#db').innerHTML = (c.ctx ? `<p>${c.ctx}</p>` : '') + body + (ok(c.fig) ? `<div class="fig">${c.fig}</div>` : '') + (ok(c.learn) ? `<h4>${learnHead}</h4><p>${c.learn}</p>` : '') + `<p style="margin-top:14px;font-size:12px">${noteTxt}</p>`;
   if (!d.open) d.showModal();
+  syncCursorTopLayer(d);
   const sc = $('#dlgCnt') || d;
   sc.scrollTop = 0;
-  topCur(true);
 }
-$('#pcase').onclick = () => openCase(); $('#dx').onclick = () => $('#dlg').close();
-$('#dlg').addEventListener('close', () => topCur(false));
+$('#pcase').onclick = () => openCase();
+const closeDlg = () => {
+  syncCursorTopLayer(null);
+  $('#dlg').close();
+};
+$('#dx').onclick = closeDlg;
+const dxTop = $('#dxTop');
+if (dxTop) dxTop.onclick = closeDlg;
+$('#dlg').addEventListener('close', () => syncCursorTopLayer(null));
+$('#dlg').addEventListener('cancel', () => syncCursorTopLayer(null));
 
 $('#dlg').addEventListener('click', e => {
   const b = $('#dlg').getBoundingClientRect();
   const clickOutside = (e.clientX < b.left || e.clientX > b.right || e.clientY < b.top || e.clientY > b.bottom);
-  if (clickOutside) $('#dlg').close();
+  if (clickOutside) {
+    syncCursorTopLayer(null);
+    $('#dlg').close();
+  }
 });
 
 const isInsideDlg = (clientX, clientY) => {
@@ -783,7 +830,8 @@ addEventListener('pointermove', e => {
   mx = e.clientX;
   my = e.clientY;
 
-  if (!customCurActive && hasFinePointer) {
+  if (!customCurActive && (hasFinePointer || e.pointerType === 'mouse' || e.pointerType === 'pen')) {
+    hasFinePointer = true;
     cx = mx;
     cy = my;
     enableCustomCur();
@@ -803,7 +851,8 @@ addEventListener('pointermove', e => {
 
 document.addEventListener('mouseleave', () => disableCustomCur());
 document.addEventListener('mouseenter', e => {
-  if (e.pointerType !== 'touch' && hasFinePointer) {
+  if (e.pointerType !== 'touch' && (hasFinePointer || e.pointerType === 'mouse' || e.pointerType === 'pen')) {
+    hasFinePointer = true;
     mx = e.clientX; my = e.clientY; cx = mx; cy = my;
     enableCustomCur();
   }
@@ -886,8 +935,15 @@ function frame(t) {
 requestAnimationFrame(frame);
 updateActiveNav();
 /* reveal */
-const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.style.transitionDelay = (e.target.dataset.d || 0) + 'ms'; e.target.classList.add('in'); e.target.addEventListener('transitionend', () => { e.target.style.transitionDelay = '' }, { once: true }); io.unobserve(e.target) } }), { threshold: .15 });
-$$('.rv').forEach((el, i) => { el.dataset.d = (i % 4) * 90; io.observe(el) });
+$$('.rv').forEach((el, i) => {
+  if (!el.classList.contains('in')) {
+    if (el.dataset.d === undefined) {
+      el.dataset.d = (i % 4) * 90;
+    }
+    if (io) io.observe(el);
+    else el.classList.add('in');
+  }
+});
 
 /* ---- polaroid vintage + carrusel + retro pixel videojuego ---- */
 (function () {
@@ -1177,7 +1233,9 @@ function applyLanguage(lang) {
   }
 }
 
-const langBtn = $('#langBtn');
+const langBtn = $('#langBtn'), lEs = $('#langEs'), lEn = $('#langEn');
+if (lEs) lEs.addEventListener('click', e => { e.stopPropagation(); applyLanguage('es'); });
+if (lEn) lEn.addEventListener('click', e => { e.stopPropagation(); applyLanguage('en'); });
 if (langBtn) {
   langBtn.addEventListener('click', () => {
     const nextLang = currentLang === 'es' ? 'en' : 'es';
