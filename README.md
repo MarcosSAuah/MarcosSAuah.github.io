@@ -80,8 +80,10 @@ Portfolio/
    * Control de acceso basado en roles (RBAC), autenticación corporativa por **LDAP**, control de intentos con **Redis**, batería de 59 tests en **pytest**, base de datos **MariaDB** y contenedorización con **Docker Compose**.
 3. **Marchel VoIP PBX** *(Laboratorio de Redes UAH)*
    * Centralita telefónica IP basada en **Asterisk 22** con **PJSIP**, IVR multinivel, conferencias, colas, buzón de voz, síntesis Festival TTS y panel web en **Flask + MariaDB**.
-4. **Distributed TCP Sockets**
-   * Sistema distribuido de mensajería en Python puro con multiplexación I/O sobre `select()`, soportando clientes concurrentes en un único hilo con topologías cliente-servidor y P2P.
+5. **NiKA Distributed Chat** *(Laboratorio de Redes UAH)*
+   * Sistema distribuido de mensajería y chat en tiempo real desarrollado junto a Chelsea Fernández Hernández para la asignatura Laboratorio de Redes, Señales y Sistemas (UAH).
+   * Arquitectura de bajo nivel con sockets TCP/UDP no bloqueantes y multiplexación I/O sobre `select()` en Python puro (modelos cliente-servidor y P2P híbrido).
+   * Evolución a arquitectura web y cloud en tiempo real con Flask, WebSockets, base de datos relacional (Amazon RDS) y procesamiento serverless de facturación en AWS Lambda (código próximamente en GitHub).
 
 ---
 
