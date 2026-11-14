@@ -16,7 +16,9 @@
       margin: 0
     }
 
-    html {
+    html,
+    body {
+      cursor: default;
       scroll-behavior: smooth;
       overflow-x: clip
     }
@@ -37,7 +39,8 @@
     [contenteditable="true"] {
       caret-color: var(--ink);
       -webkit-user-select: text;
-      user-select: text
+      user-select: text;
+      cursor: text !important;
     }
 
     button {
@@ -53,6 +56,7 @@
       touch-action: manipulation
     }
 
+    /* Fallback por defecto: cursor nativo tipo mano para elementos interactivos */
     button,
     .btn,
     .cbtn,
@@ -71,30 +75,100 @@
     .hob div,
     summary,
     [role="button"] {
-      cursor: pointer !important;
+      cursor: pointer;
     }
 
-    #cur {
-      display: none !important;
-    }
-
+    /* Elementos del cursor retro (ocultos por defecto hasta que JS confirme soporte) */
+    #cur,
     #ring {
       display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: auto;
+      bottom: auto;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      will-change: transform;
     }
 
-    .cc #ring {
+    /* Activación progresiva: cuando el cursor retro está activo, ocultar completamente el cursor nativo en TODOS los elementos */
+    .custom-cur,
+    .custom-cur *,
+    .custom-cur *::before,
+    .custom-cur *::after {
+      cursor: none !important;
+    }
+
+    .custom-cur input,
+    .custom-cur textarea,
+    .custom-cur [contenteditable="true"] {
+      cursor: text !important;
+    }
+
+    .custom-cur #cur,
+    .custom-cur #ring {
       display: block;
     }
 
-    @media(hover:none), (pointer:coarse) {
-      .cc #ring,
-      #ring {
-        display: none !important;
-      }
+    #cur {
+      width: 10px;
+      height: 10px;
+      margin: -5px 0 0 -5px;
+      background: var(--ink);
+      transition: transform .18s ease-out, background .18s ease-out, box-shadow .18s ease-out;
     }
 
-    .cc.mo #ring {
-      display: none !important;
+    #cur.h {
+      transform: scale(1.6);
+      background: var(--orange);
+      box-shadow: 0 0 8px rgba(255, 176, 102, .85);
+    }
+
+    #ring {
+      width: 38px;
+      height: 38px;
+      margin: -19px 0 0 -19px;
+      border: 2px solid var(--ink);
+      background: transparent;
+      transition: width .22s cubic-bezier(.3,1.4,.5,1), height .22s cubic-bezier(.3,1.4,.5,1), margin .22s cubic-bezier(.3,1.4,.5,1), background .2s, border-color .2s;
+    }
+
+    #ring.h {
+      width: 56px;
+      height: 56px;
+      margin: -28px 0 0 -28px;
+      border-color: var(--orange);
+      background: rgba(255, 176, 102, .45);
+    }
+
+    /* Seguridad total en móviles y pantallas táctiles: siempre cursor nativo */
+    @media (hover: none), (pointer: coarse) {
+      .custom-cur,
+      .custom-cur * {
+        cursor: auto !important;
+      }
+
+      .custom-cur a,
+      .custom-cur button,
+      .custom-cur .btn,
+      .custom-cur .cbtn,
+      .custom-cur .k,
+      .custom-cur #cart,
+      .custom-cur .clink,
+      .custom-cur .dots button,
+      .custom-cur .pdot,
+      .custom-cur .pol {
+        cursor: pointer !important;
+      }
+
+      #cur,
+      #ring,
+      .custom-cur #cur,
+      .custom-cur #ring {
+        display: none !important;
+      }
     }
 
     [hidden] {
@@ -164,33 +238,6 @@
       background: linear-gradient(90deg, var(--coral), var(--orange), var(--yellow), var(--mint), var(--sky));
       transform-origin: left;
       transform: scaleX(0)
-    }
-
-    #ring {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: auto;
-      bottom: auto;
-      z-index: 99;
-      pointer-events: none;
-      border-radius: 50%;
-      padding: 0;
-      overflow: visible;
-      width: 38px;
-      height: 38px;
-      margin: -19px 0 0 -19px;
-      border: 2px solid var(--ink);
-      background: transparent;
-      transition: width .25s, height .25s, margin .25s, background .25s, border-color .25s;
-    }
-
-    #ring.h {
-      width: 56px;
-      height: 56px;
-      margin: -28px 0 0 -28px;
-      border-color: var(--orange);
-      background: rgba(255, 176, 102, .45);
     }
 
     .sp {
@@ -1880,7 +1927,7 @@
       background: #14121f;
       border-radius: 3px;
       overflow: hidden;
-      cursor: crosshair;
+      cursor: pointer;
     }
 
     .pol-slides {

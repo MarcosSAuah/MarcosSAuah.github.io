@@ -188,15 +188,28 @@ async function setCart(i) {
   $('#body').classList.remove('bump'); void $('#body').offsetWidth; $('#body').classList.add('bump'); $('#led').classList.add('on'); stage.classList.add('boot'); audio.insert(); audio.boot();
   await sleep(560); if (my !== tok) return; $('#boot').classList.add('off'); $('#sp').classList.add('on');
 }
+/* ---- cursor personalizado con fallback automático nativo ---- */
+const CUR = $('#cur'), RING = $('#ring');
+let hasFinePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
+let customCurActive = false;
+
+function enableCustomCur() {
+  if (customCurActive || !hasFinePointer || !CUR || !RING) return;
+  customCurActive = true;
+  document.documentElement.classList.add('custom-cur');
+}
+
+function disableCustomCur() {
+  if (!customCurActive) return;
+  customCurActive = false;
+  document.documentElement.classList.remove('custom-cur');
+  if (CUR) CUR.classList.remove('h');
+  if (RING) RING.classList.remove('h');
+}
+
 function topCur(on) {
-  const c = $('#cur'), r = $('#ring'), de = document.documentElement;
-  if (on) {
-    r.classList.remove('h');
-    if (c.showPopover) { c.popover = 'manual'; r.popover = 'manual'; try { r.showPopover(); c.showPopover(); return } catch (e) { c.removeAttribute('popover'); r.removeAttribute('popover') } }
-    de.classList.add('mo'); return;
-  }
-  de.classList.remove('mo');
-  if (c.hasAttribute('popover')) { try { c.hidePopover(); r.hidePopover() } catch (e) { } c.removeAttribute('popover'); r.removeAttribute('popover') }
+  if (on) disableCustomCur();
+  else if (hasFinePointer) enableCustomCur();
 }
 function openCase(idx = cur) {
   const p = P[idx]; if (!p || !p.cs) return; const c = p.cs, ok = s => s && !s.startsWith('[TODO]'), d = $('#dlg');
@@ -317,22 +330,55 @@ addEventListener('keydown', e => { if (e.key === 'Escape') closeMn(); if ($('#dl
 let mx = innerWidth / 2, my = innerHeight / 2, cx = mx, cy = my, tx = 0, ty = 0, isTouch = matchMedia('(hover:none),(pointer:coarse)').matches;
 const COLS = ['#F7917A', '#FFB066', '#FFD35C', '#A8D5C8', '#8EC5E8', '#CDB8F5']; let lastSp = 0;
 addEventListener('pointermove', e => {
-  if (e.pointerType === 'touch') { isTouch = true; return }
-  isTouch = false; moved = true; mx = e.clientX; my = e.clientY;
-  if (RM || $('#dlg').open) return; const n = performance.now(); if (n - lastSp < 50) return; lastSp = n;
-  const s = document.createElement('i'); s.className = 'sp'; s.style.cssText = `left:${mx}px;top:${my}px;background:${COLS[Math.random() * 6 | 0]}`; document.body.appendChild(s);
+  if (e.pointerType === 'touch') {
+    isTouch = true;
+    disableCustomCur();
+    return;
+  }
+  isTouch = false;
+  moved = true;
+  mx = e.clientX;
+  my = e.clientY;
+
+  if (!customCurActive && hasFinePointer) {
+    cx = mx;
+    cy = my;
+    enableCustomCur();
+  }
+
+  if (RM || $('#dlg').open) return;
+  const n = performance.now();
+  if (n - lastSp < 50) return;
+  lastSp = n;
+  const s = document.createElement('i');
+  s.className = 'sp';
+  s.style.cssText = `left:${mx}px;top:${my}px;background:${COLS[Math.random() * 6 | 0]}`;
+  document.body.appendChild(s);
   const dx = (Math.random() - .5) * 40, dy = 10 + Math.random() * 30;
-  s.animate([{ transform: 'translate(-50%,-50%) scale(1) rotate(0)', opacity: 1 }, { transform: `translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) scale(0) rotate(200deg)`, opacity: 0 }], { duration: 750, easing: 'ease-out' }).onfinish = () => s.remove()
+  s.animate([{ transform: 'translate(-50%,-50%) scale(1) rotate(0)', opacity: 1 }, { transform: `translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) scale(0) rotate(200deg)`, opacity: 0 }], { duration: 750, easing: 'ease-out' }).onfinish = () => s.remove();
 });
-const interactiveSel = 'a, button, .btn, .cbtn, .k, #cart, .dots button, .clink, .pdot, .pol, .pol-slide, #pcase, #snd, #mn, .card, .hob div, [role="button"], summary';
+
+document.addEventListener('mouseleave', () => disableCustomCur());
+document.addEventListener('mouseenter', e => {
+  if (e.pointerType !== 'touch' && hasFinePointer) {
+    mx = e.clientX; my = e.clientY; cx = mx; cy = my;
+    enableCustomCur();
+  }
+});
+
+const interactiveSel = 'a, button, .btn, .cbtn, .k, #cart, .dots button, .clink, .pdot, .pol, .pol-media, .pol-slide, .pol-canvas, #pcase, #snd, #mn, .card, .hob div, [role="button"], summary';
 document.addEventListener('pointerover', e => {
-  if (e.pointerType !== 'touch') {
+  if (e.pointerType !== 'touch' && customCurActive) {
     const isInter = !!(e.target && e.target.closest && e.target.closest(interactiveSel));
-    $('#ring').classList.toggle('h', isInter);
+    if (RING) RING.classList.toggle('h', isInter);
+    if (CUR) CUR.classList.toggle('h', isInter);
   }
 });
 document.addEventListener('pointerout', e => {
-  if (!e.relatedTarget) $('#ring').classList.remove('h');
+  if (!e.relatedTarget) {
+    if (RING) RING.classList.remove('h');
+    if (CUR) CUR.classList.remove('h');
+  }
 });
 /* ---- contacto directo ---- */
 const EM = ['marcos.santos.aragon', 'gmail.com'].join('@'), TEL = ['+34', '684', '04', '52', '29'];
@@ -348,11 +394,14 @@ $$('.card').forEach(c => { c.onpointermove = e => { if (e.pointerType === 'touch
 const rib = $('#rib'), RC = ['#A8D5C8', '#F7917A', '#FFB066', '#FFD35C', '#F7917A', '#2A9DA6'], WD = [1, .82, .64, .46, .3, .15];
 rib.innerHTML = RC.map(c => `<path fill="none" stroke="${c}" stroke-linejoin="round"/>`).join('');
 const paths = [...rib.children], blobs = $$('.blob'), glare = $('.glare'), tiltEl = $('#tilt'); let vel = 0, lastY = scrollY, mq = 0, lastDraw = -1, lastW = 0, moved = true;
-const CUR = $('#cur'), RING = $('#ring'), BAR = $('#bar'), MQS = $('#mqs'), TL = $('#tl'), MAGS = $$('.mag'), DE = document.documentElement;
+const BAR = $('#bar'), MQS = $('#mqs'), TL = $('#tl'), MAGS = $$('.mag'), DE = document.documentElement;
 function frame(t) {
   const W = innerWidth, H = innerHeight, sy = scrollY; vel += ((sy - lastY) - vel) * .15; lastY = sy;
   cx += (mx - cx) * .2; cy += (my - cy) * .2;
-  CUR.style.transform = `translate(${mx}px,${my}px)`; RING.style.transform = `translate(${cx}px,${cy}px)`;
+  if (customCurActive) {
+    if (CUR) CUR.style.transform = `translate(${mx}px,${my}px)`;
+    if (RING) RING.style.transform = `translate(${cx}px,${cy}px)`;
+  }
   const px = isTouch ? .5 : mx / W, py = isTouch ? .5 : my / H, p = prog();
   tx += ((px - .5) * 18 - tx) * .08; ty += ((py - .5) * -14 - ty) * .08;
   tiltEl.style.transform = `rotateY(${tx}deg) rotateX(${ty + 4 - (p || 0) * 4}deg) translateY(${RM ? 0 : Math.sin(t / 900) * 5}px)`;
@@ -376,7 +425,7 @@ function frame(t) {
   else if (moved || sy !== frame.ly) { frame.ly = sy; let near = false; MAGS.forEach(b => { b.style.transform = ''; const r = b.getBoundingClientRect(), dx = mx - (r.left + r.width / 2), dy = my - (r.top + r.height / 2); if (Math.hypot(dx, dy) < 90) { near = true; b.style.transform = `translate(${dx * .25}px,${dy * .35}px)` } }); if (!near && Math.abs(mx - cx) < .5 && Math.abs(my - cy) < .5) moved = false }
   requestAnimationFrame(frame)
 }
-requestAnimationFrame(frame); DE.classList.add('cc');
+requestAnimationFrame(frame);
 updateActiveNav();
 /* reveal */
 const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.style.transitionDelay = (e.target.dataset.d || 0) + 'ms'; e.target.classList.add('in'); e.target.addEventListener('transitionend', () => { e.target.style.transitionDelay = '' }, { once: true }); io.unobserve(e.target) } }), { threshold: .15 });
